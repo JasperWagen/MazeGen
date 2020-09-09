@@ -1,5 +1,17 @@
-@()
+@(mazeForm: Form[MazeForm])(implicit messages: Messages)
+
+@import helper._
 
 @main("Maze Generator") {
   <h1>Welcome to Maze Gen</h1>
+  <br><br>
+  <div class="form">
+    <p>This is where the form will go</p>
+    @form(action = routes.HomeController.newMaze()) {
+      @inputText(mazeForm("width"))
+      @inputText(mazeForm("height"))
+      <input id="postButton" type="submit" value="Post">
+    }
+    <img id ="mazeImg" src="/assets/images/mazeBucket/TEST.png">
+  </div>
 }
