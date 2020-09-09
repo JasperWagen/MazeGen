@@ -1,0 +1,23 @@
+body {
+    background-image: url("/assets/images/mazeGenBG");
+     max-width: 800px;
+     margin: auto;
+     margin-bottom: 200px;
+     color: rgb(65, 65, 65);
+
+     font-family: "Inter","Roboto",-apple-system,system-ui,BlinkMacSystemFont,
+     "Segoe UI", Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",Helvetica,Arial,
+     sans-serif;
+     font-weight: 300;
+}
+
+h1 {
+    margin: 20px, 0px;
+    padding: 20px 0px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.8);
+    font-family: Cambria;
+    font-weight: 100;
+    font-size: 50px;
+    border-radius: 10px
+}
