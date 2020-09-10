@@ -1,18 +1,12 @@
 package controllers
 
 import javax.inject._
-import play.api._
 import play.api.mvc._
 import services._
-import play.api.data._
-import play.api.data.Forms._
 
-import play.api.i18n.Lang
-import play.api.i18n.Langs
-import play.api.mvc.BaseController
 import play.api.mvc.ControllerComponents
 
-case class MazeForm(height: Int, width: Int)
+case class MazeForm(height: Int, width: Int, bgColor: String, fgColor: String)
 
 
 @Singleton
@@ -23,31 +17,41 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
 
     val mazeForm = Form(
     mapping(
-      "height" -> number,
-      "width" -> number
+      "Width" -> number,
+      "Height" -> number,
+      "BGColor" -> text,
+      "FGColor" -> text
     )(MazeForm.apply)(MazeForm.unapply)
   )
 
   def newMaze(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    //val mazeData = mazeForm.bindFromRequest()
     mazeForm.bindFromRequest().fold(
       formWithErrors => {
         //TODO: implement bad request
         BadRequest("bad request")
       },
       mazeData => {
+        //gather data
         val width = mazeData.width
         val height = mazeData.height
+        val bgHexColor = mazeData.bgColor
+        val fgHexColor = mazeData.fgColor
 
+        //convert color format
+        val bgIntColor = Integer.parseInt(bgHexColor.substring(1), 16)
+        val fgIntColor = Integer.parseInt(fgHexColor.substring(1), 16)
+
+        //generate maze
         val maze = new mazeGen.PopulateMaze
-        val canvas = maze.canvas(width, height)
+        val canvas = maze.canvas(height, width)
         val popCanvas = maze.populate(canvas)
 
         val imgCreator = new imageCreator.MazeImgCreator
-        val bgColor = 4934475
-        val pathColor = 13158600
+        val bgColor = bgIntColor
+        val pathColor = fgIntColor
         imgCreator.createMazeImg("public/images/mazeBucket/TEST.png", popCanvas, bgColor, pathColor)
-        Ok(views.html.index(mazeForm))
+
+        Ok(views.html.index(mazeForm, width, height, bgHexColor, fgHexColor))
       }
     )
 
@@ -56,13 +60,22 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
 
   def index(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     val maze = new mazeGen.PopulateMaze
-    val canvas = maze.canvas(70, 40)
+
+    //default values
+    val width = 70
+    val height = 40
+    val bgIntColor = 4934475
+    val fgIntColor = 13158600
+
+    val bgHexColor = "#" + Integer.toHexString(bgIntColor)
+    val fgHexColor = "#" + Integer.toHexString(fgIntColor)
+
+    val canvas = maze.canvas(width, height)
     val popCanvas = maze.populate(canvas)
 
     val imgCreator = new imageCreator.MazeImgCreator
-    val bgColor = 4934475
-    val pathColor = 13158600
-    imgCreator.createMazeImg("public/images/mazeBucket/TEST.png", popCanvas, bgColor, pathColor)
-    Ok(views.html.index(mazeForm))
+
+    imgCreator.createMazeImg("public/images/mazeBucket/TEST.png", popCanvas, bgIntColor, fgIntColor)
+    Ok(views.html.index(mazeForm, width, height, bgHexColor, fgHexColor))
   }
 }

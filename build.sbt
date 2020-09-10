@@ -7,8 +7,15 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.13.3"
 
+resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"
+
 libraryDependencies += guice
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
+
+
+libraryDependencies += "com.adrianhurt" %% "play-bootstrap" % "1.6.1-P28-B4"
+
+
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "HMRC.controllers._"

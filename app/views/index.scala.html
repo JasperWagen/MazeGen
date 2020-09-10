@@ -1,18 +1,29 @@
-@(mazeForm: Form[MazeForm])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+@(mazeForm: Form[MazeForm], height: Int, width: Int, bgColor: String, fgColor: String)(implicit request: RequestHeader, messagesProvider: MessagesProvider)
 
+@import helper.Implicits._
 @import helper._
 
 @main("Maze Generator") {
   <h1>Welcome to Maze Gen</h1>
   <br><br>
-  <div class="form">
-    <p>This is where the form will go</p>
-    @form(action = routes.HomeController.newMaze()) {
-      @CSRF.formField
-      @inputText(mazeForm("width"))
-      @inputText(mazeForm("height"))
-      <input id="postButton" type="submit" value="Post">
-    }
+  <dl class="form">
+  @b4.horizontal.form(routes.HomeController.newMaze(), "String", "String") { implicit hfc =>
+
+    @CSRF.formField
+
+    @b4.range(mazeForm("Width"), Symbol("_label") -> "Width (5 - 150):", Symbol("min") -> 10, Symbol("max") -> 150,
+              Symbol("step") -> 1, Symbol("value") -> width )
+
+    @b4.range(mazeForm("Height"), Symbol("_label") -> "Height (5 - 150):", Symbol("min") -> 10, Symbol("max") -> 150,
+              Symbol("step") -> 1, Symbol("value") -> height)
+
+    @b4.color(mazeForm("BGColor"), Symbol("_label") -> "Wall Color:", Symbol("value") -> bgColor)
+    @b4.color(mazeForm("FGColor"), Symbol("_label") -> "Path Color:", Symbol("value") -> fgColor)
+    <br>
+    <input id="postButton" type="submit" value="Generate">
+  }
+
+    <br>
     <img id ="mazeImg" src="/assets/images/mazeBucket/TEST.png">
-  </div>
+  </dl>
 }
