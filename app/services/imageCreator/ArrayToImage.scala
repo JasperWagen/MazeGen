@@ -3,9 +3,6 @@ package services.imageCreator
 import java.awt.image.BufferedImage
 
 class ArrayToImage {
-//    def scalator(width: Int, height: Int): Int = {
-//
-//    }
     def createImg(mazeCanvas: Array[Array[Int]], bgColor: Int): BufferedImage = {
         val scale = 20
         val height = mazeCanvas.length*scale
