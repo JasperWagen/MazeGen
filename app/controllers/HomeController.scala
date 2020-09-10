@@ -29,20 +29,29 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
   )
 
   def newMaze(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    val mazeData = mazeForm.bindFromRequest()
-    mazeData
-    println(mazeData("width"))
-    println(mazeData)
+    //val mazeData = mazeForm.bindFromRequest()
+    mazeForm.bindFromRequest().fold(
+      formWithErrors => {
+        //TODO: implement bad request
+        BadRequest("bad request")
+      },
+      mazeData => {
+        val width = mazeData.width
+        val height = mazeData.height
 
-    val maze = new mazeGen.PopulateMaze
-    val canvas = maze.canvas(10, 10)
-    val popCanvas = maze.populate(canvas)
+        val maze = new mazeGen.PopulateMaze
+        val canvas = maze.canvas(width, height)
+        val popCanvas = maze.populate(canvas)
 
-    val imgCreator = new imageCreator.MazeImgCreator
-    val bgColor = 4934475
-    val pathColor = 13158600
-    imgCreator.createMazeImg("public/images/mazeBucket/TEST.png", popCanvas, bgColor, pathColor)
-    Ok(views.html.index(mazeForm))
+        val imgCreator = new imageCreator.MazeImgCreator
+        val bgColor = 4934475
+        val pathColor = 13158600
+        imgCreator.createMazeImg("public/images/mazeBucket/TEST.png", popCanvas, bgColor, pathColor)
+        Ok(views.html.index(mazeForm))
+      }
+    )
+
+
   }
 
   def index(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
