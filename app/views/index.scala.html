@@ -4,26 +4,32 @@
 @import helper._
 
 @main("Maze Generator") {
-  <h1>Welcome to Maze Gen</h1>
-  <br><br>
-  <dl class="form">
-  @b4.horizontal.form(routes.HomeController.newMaze(), "String", "String") { implicit hfc =>
+  <div class="main">
+    <h1>Welcome to Maze Gen</h1>
+    <br><br>
+    <div class="pageBlock">
 
-    @CSRF.formField
+      <div class="form">
+        @b4.inline.form(routes.HomeController.newMaze()) { implicit hfc =>
 
-    @b4.range(mazeForm("Width"), Symbol("_label") -> "Width (5 - 150):", Symbol("min") -> 10, Symbol("max") -> 150,
-              Symbol("step") -> 1, Symbol("value") -> width )
+          @CSRF.formField
+          <div id="sizeControls">
+            @b4.range(mazeForm("Width"), Symbol("_label") -> "Width (5 - 150):", Symbol("min") -> 10, Symbol("max") -> 150,
+                      Symbol("step") -> 1, Symbol("value") -> width )
 
-    @b4.range(mazeForm("Height"), Symbol("_label") -> "Height (5 - 150):", Symbol("min") -> 10, Symbol("max") -> 150,
-              Symbol("step") -> 1, Symbol("value") -> height)
-
-    @b4.color(mazeForm("BGColor"), Symbol("_label") -> "Wall Color:", Symbol("value") -> bgColor)
-    @b4.color(mazeForm("FGColor"), Symbol("_label") -> "Path Color:", Symbol("value") -> fgColor)
-    <br>
-    <input id="postButton" type="submit" value="Generate">
-  }
-
-    <br>
-    <img id ="mazeImg" src="/assets/images/mazeBucket/TEST.png">
-  </dl>
+            @b4.range(mazeForm("Height"), Symbol("_label") -> "Height (5 - 150):", Symbol("min") -> 10, Symbol("max") -> 150,
+                      Symbol("step") -> 1, Symbol("value") -> height)
+          </div>
+          <div id="colorControls">
+            @b4.color(mazeForm("BGColor"), Symbol("_label") -> "Wall Color:", Symbol("value") -> bgColor)
+            @b4.color(mazeForm("FGColor"), Symbol("_label") -> "Path Color:", Symbol("value") -> fgColor)
+          </div>
+          <br>
+          <input id="postButton" type="submit" value="Generate">
+        }
+      </div>
+      <br>
+      <img id ="mazeImg" src="/assets/images/mazeBucket/TEST.png">
+    </div>
+  </div>
 }

@@ -3,8 +3,7 @@ package services.imageCreator
 import java.awt.image.BufferedImage
 
 class ArrayToImage {
-    def createImg(mazeCanvas: Array[Array[Int]], bgColor: Int): BufferedImage = {
-        val scale = 20
+    def createImg(mazeCanvas: Array[Array[Int]], bgColor: Int, scale: Int): BufferedImage = {
         val height = mazeCanvas.length*scale
         val width = mazeCanvas(0).length*scale
         val img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
@@ -16,8 +15,7 @@ class ArrayToImage {
         img
     }
 
-    def mapArrayToImg(mazeCanvas: Array[Array[Int]], img: BufferedImage, pathColor: Int): BufferedImage = {
-        val scale = 20
+    def mapArrayToImg(mazeCanvas: Array[Array[Int]], img: BufferedImage, pathColor: Int, scale: Int): BufferedImage = {
         val lowBound = -(scale/3.5).toInt
         val upBound = scale + (scale/3.5).toInt
 

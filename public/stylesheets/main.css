@@ -1,33 +1,51 @@
 body {
-     background-image: url("/assets/images/mazeGenBG");
-     max-width: 650px;
-     margin: auto;
-     margin-bottom: 200px;
-     color: rgb(65, 65, 65);
-
-     font-family: "Inter","Roboto",-apple-system,system-ui,BlinkMacSystemFont,
-     "Segoe UI", Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",Helvetica,Arial,
-     sans-serif;
-     font-weight: 300;
+    /*background-image: url("/assets/images/mazeGenBG");*/
+    background: rgb(50, 50, 50)
+}
 
 
+.main{
+    max-width: 700px;
+    margin: auto;
+    margin-bottom: 200px;
+    color: rgb(65, 65, 65);
+
+    font-family: "Inter","Roboto",-apple-system,system-ui,BlinkMacSystemFont,
+    "Segoe UI", Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",Helvetica,Arial,
+    sans-serif;
 }
 
 h1 {
     margin: 20px, 0px;
     padding: 20px 0px;
     text-align: center;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.9);
     font-family: Cambria;
     font-weight: 100;
     font-size: 50px;
     border-radius: 10px
 }
-
-.form{
-    background: rgba(255, 255, 255, 0.8);
+.pageBlock{
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 10px;
+    padding: 10px 20px 20px 20px;
+}
+
+
+label{
+    margin: 0px 10px 10px 0px;
+}
+
+.form-group{
     padding: 10px;
+}
+
+#colorControls{
+    display: inline;
+}
+
+#sizeControls{
+    display: inline;
 }
 
 #mazeImg {
