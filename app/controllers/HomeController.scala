@@ -29,9 +29,13 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
   )
 
   def newMaze(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    //val mazeData = mazeForm.bindFromRequest()
+    val mazeData = mazeForm.bindFromRequest()
+    mazeData
+    println(mazeData("width"))
+    println(mazeData)
+
     val maze = new mazeGen.PopulateMaze
-    val canvas = maze.canvas(10, 40)
+    val canvas = maze.canvas(10, 10)
     val popCanvas = maze.populate(canvas)
 
     val imgCreator = new imageCreator.MazeImgCreator

@@ -1,4 +1,4 @@
-@(mazeForm: Form[MazeForm])(implicit messages: Messages)
+@(mazeForm: Form[MazeForm])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
 
 @import helper._
 
@@ -8,6 +8,7 @@
   <div class="form">
     <p>This is where the form will go</p>
     @form(action = routes.HomeController.newMaze()) {
+      @CSRF.formField
       @inputText(mazeForm("width"))
       @inputText(mazeForm("height"))
       <input id="postButton" type="submit" value="Post">
