@@ -3,6 +3,8 @@ package services.imageCreator
 import java.awt.image.BufferedImage
 
 class ArrayToImage {
+    //Contains methods for creating a buffered image object based on a 2D array (createImg) and then mapping the array
+    // values to specified colors in the image (mapArrayToImg)
     def createImg(mazeCanvas: Array[Array[Int]], bgColor: Int, scale: Int): BufferedImage = {
         val height = mazeCanvas.length*scale
         val width = mazeCanvas(0).length*scale
@@ -16,6 +18,7 @@ class ArrayToImage {
     }
 
     def mapArrayToImg(mazeCanvas: Array[Array[Int]], img: BufferedImage, pathColor: Int, scale: Int): BufferedImage = {
+        //Upper and lower bounds used here to make the path width greater than that of the walls
         val lowBound = -(scale/3.5).toInt
         val upBound = scale + (scale/3.5).toInt
 
@@ -29,7 +32,7 @@ class ArrayToImage {
                     }
                 } catch {
                     case e: ArrayIndexOutOfBoundsException => {
-                        for (iImg <- 0 to scale-1; jImg <- lowBound to upBound) {
+                        for (iImg <- 0 until scale; jImg <- lowBound to upBound) {
                             val iPos = (iMaze * scale) + iImg
                             val jPos = (jMaze * scale) + jImg
                             img.setRGB(iPos, jPos, pathColor)

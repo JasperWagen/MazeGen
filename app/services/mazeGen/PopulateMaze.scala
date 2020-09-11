@@ -17,9 +17,9 @@ class PopulateMaze extends MazeGen {
         var x = 0
         while(x < traceback.size){
             val (i, j) = traceback(x)
-            val (recCanvas, tracebackUpdate) = pathCreator(i, j, updatedCanvas)
+            val (recursiveCanvas, tracebackUpdate) = pathCreator(i, j, updatedCanvas)
             traceback.addAll(tracebackUpdate)
-            updatedCanvas = recCanvas
+            updatedCanvas = recursiveCanvas
             x += 1
         }
         updatedCanvas = addExit(updatedCanvas)

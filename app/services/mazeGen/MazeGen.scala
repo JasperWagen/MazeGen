@@ -6,6 +6,8 @@ import scala.util.control.Breaks.{break, breakable}
 
 
 class MazeGen{
+    //Contains the methods required to, given height and width, create a Maze as a 2D binary array object.
+    //Where 0 represents the walls of the maze and 1 represents the paths
     def canvas(width: Int, height: Int): Array[Array[Int]] ={
         val mazeMatrix = Array.ofDim[Int](height,width)
         for(i <- mazeMatrix.indices){
@@ -79,7 +81,7 @@ class MazeGen{
                 val avalibleDirections = moveOptions(i, j, mazeCanvas)
 
                 if (avalibleDirections.isEmpty) {
-                    break
+                    break()
                 }
 
                 if (avalibleDirections.size > 1){
