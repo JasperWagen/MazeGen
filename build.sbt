@@ -11,7 +11,7 @@ resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repos
 
 libraryDependencies += guice
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
-
+libraryDependencies += "org.scalatest" %% "scalatest-funsuite" % "3.2.0" % "test"
 
 libraryDependencies += "com.adrianhurt" %% "play-bootstrap" % "1.6.1-P28-B4"
 
