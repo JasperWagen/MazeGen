@@ -1,4 +1,5 @@
 package services.mazeSolver
+import scala.collection.immutable.List
 
 class CheckNodes {
     def findEntrance(maze: Array[Array[Int]]): (Int, Int) = {

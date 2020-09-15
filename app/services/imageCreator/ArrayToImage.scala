@@ -17,10 +17,10 @@ class ArrayToImage {
         img
     }
 
-    def mapArrayToImg(mazeCanvas: Array[Array[Int]], img: BufferedImage, pathColor: Int, scale: Int): BufferedImage = {
+    def mapArrayToImg(mazeCanvas: Array[Array[Int]], img: BufferedImage, pathColor: Int, scale: Int, squareSize: Float): BufferedImage = {
         //Upper and lower bounds used here to make the path width greater than that of the walls
-        val lowBound = -(scale/3.5).toInt
-        val upBound = scale + (scale/3.5).toInt
+        val lowBound = -(scale/squareSize).toInt
+        val upBound = scale + (scale/squareSize).toInt
 
         for(iMaze <- mazeCanvas(0).indices; jMaze <- mazeCanvas.indices){
             if(mazeCanvas(jMaze)(iMaze) == 1){
