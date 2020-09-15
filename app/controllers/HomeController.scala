@@ -1,10 +1,14 @@
 package controllers
 
+import java.io.File
+
+import javax.imageio.ImageIO
 import javax.inject._
 import play.api.mvc._
 import services._
-
 import play.api.mvc.ControllerComponents
+import services.imageCreator.ArrayToImage
+import services.mazeSolver.DepthFirstSearch
 
 case class MazeForm(height: Int, width: Int, bgColor: String, fgColor: String)
 
@@ -47,14 +51,20 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
         val popCanvas = maze.populate(canvas)
 
         val imgCreator = new imageCreator.MazeImgCreator
+        val arrayToImage = new ArrayToImage
         val bgColor = bgIntColor
         val pathColor = fgIntColor
-        imgCreator.createMazeImg("public/images/mazeBucket/TEST.png", popCanvas, bgColor, pathColor)
+        val mazeImg = imgCreator.createMazeImg(popCanvas, bgColor, pathColor)
 
+        val dfSearch = new DepthFirstSearch
+        val searchPath = dfSearch.search(popCanvas)
+        val searchArr = dfSearch.mapSearchPathToArr(searchPath, popCanvas)
+        val solvedMazeImg = arrayToImage.mapArrayToImg(searchArr, mazeImg, 16711680, 20, 100F)
+
+        ImageIO.write(solvedMazeImg, "png", new File("public/images/mazeBucket/TEST.png"))
         Ok(views.html.index(mazeForm, width, height, bgHexColor, fgHexColor))
       }
     )
-
 
   }
 
@@ -74,8 +84,15 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
     val popCanvas = maze.populate(canvas)
 
     val imgCreator = new imageCreator.MazeImgCreator
+    val arrayToImage = new ArrayToImage
+    val mazeImg = imgCreator.createMazeImg(popCanvas, bgIntColor, fgIntColor)
 
-    imgCreator.createMazeImg("public/images/mazeBucket/TEST.png", popCanvas, bgIntColor, fgIntColor)
+    val dfSearch = new DepthFirstSearch
+    val searchPath = dfSearch.search(popCanvas)
+    val searchArr = dfSearch.mapSearchPathToArr(searchPath, popCanvas)
+    val solvedMazeImg = arrayToImage.mapArrayToImg(searchArr, mazeImg, 16711680, 20, 100F)
+
+    ImageIO.write(solvedMazeImg, "png", new File("public/images/mazeBucket/TEST.png"))
     Ok(views.html.index(mazeForm, width, height, bgHexColor, fgHexColor))
   }
 }

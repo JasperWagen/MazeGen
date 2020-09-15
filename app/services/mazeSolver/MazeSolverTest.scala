@@ -1,20 +1,50 @@
 package services.mazeSolver
+import java.io.File
+
+import javax.imageio.ImageIO
+import services.imageCreator.ArrayToImage
+import services.{imageCreator, mazeGen}
 import services.mazeGen._
 
 
 object MazeSolverTest {
     def main(args: Array[String]): Unit = {
-        val mazeGen = new MazeGen
-        val populate = new PopulateMaze
-        var testMaze = mazeGen.canvas(20, 10)
-        testMaze = populate.populate(testMaze)
+        val maze = new mazeGen.PopulateMaze
 
-        for(i <- testMaze.indices){
-            for(j <- testMaze(0).indices) {
-                print(testMaze(i)(j) + " ")
+        //default values
+        val width = 10
+        val height = 10
+        val bgIntColor = 4934475
+        val fgIntColor = 13158600
+
+        val bgHexColor = "#" + Integer.toHexString(bgIntColor)
+        val fgHexColor = "#" + Integer.toHexString(fgIntColor)
+
+        val canvas = maze.canvas(width, height)
+        val popCanvas = maze.populate(canvas)
+
+        val imgCreator = new imageCreator.MazeImgCreator
+        val arrayToImage = new ArrayToImage
+        val mazeImg = imgCreator.createMazeImg(popCanvas, bgIntColor, fgIntColor)
+
+        val dfSearch = new DepthFirstSearch
+        for(i <- popCanvas.indices){
+            for(j <- popCanvas(0).indices) {
+                print(popCanvas(i)(j) + " ")
             }
             println()
         }
+        val searchPath = dfSearch.search(popCanvas)
+        val searchArr = dfSearch.mapSearchPathToArr(searchPath, popCanvas)
+        val solvedMazeImg = arrayToImage.mapArrayToImg(searchArr, mazeImg, 16711680, 20, 6F)
+
+        ImageIO.write(solvedMazeImg, "png", new File("public/images/mazeBucket/TEST.png"))
+//        for(i <- testMaze.indices){
+//            for(j <- testMaze(0).indices) {
+//                print(testMaze(i)(j) + " ")
+//            }
+//            println()
+//        }
 
 
     }
