@@ -19,7 +19,7 @@ class MazeGen{
         mazeMatrix
     }
 
-    def checkProximity(direction: Int, j: Int, i: Int, mazeCanvas: Array[Array[Int]]): Boolean = {
+    def checkProximity(direction: Int, j: Int, i: Int, mazeCanvas: Array[Array[Int]]): Option[Int] = {
         try {
             //TODO: collapse i, j down into type (point)
             //TODO: direction enumeration
@@ -28,52 +28,41 @@ class MazeGen{
                 for (a <- -1 to 1; b <- -2 to -1) {
                     if (mazeCanvas(j + b)(i + a) == 1) {
 
-                        return true
+                        return None
                     }
                 }
             } else if (direction == 1) {
                 for (a <- 1 to 2; b <- -1 to 1) {
                     if (mazeCanvas(j + b)(i + a) == 1) {
 
-                        return true
+                        return None
                     }
                 }
             } else if (direction == 2) {
                 for (a <- -1 to 1; b <- 1 to 2) {
                     if (mazeCanvas(j + b)(i + a) == 1) {
 
-                        return true
+                        return None
                     }
                 }
             } else if (direction == 3) {
                 for (a <- -2 to -1; b <- -1 to 1) {
                     if (mazeCanvas(j + b)(i + a) == 1) {
 
-                        return true
+                        return None
                     }
                 }
             }
         } catch {
-            case e: ArrayIndexOutOfBoundsException => return true
+            case e: ArrayIndexOutOfBoundsException => return None
         }
-        false
+        Some(direction)
     }
 
-    def moveOptions(j: Int, i: Int, mazeCanvas: Array[Array[Int]]): ListBuffer[Int] ={
-        var optionSet = ListBuffer[Int]()
-        if(!checkProximity(0, j, i, mazeCanvas)){
-            optionSet += 0
-        }
-        if(!checkProximity(1, j, i, mazeCanvas)){
-            optionSet += 1
-        }
-        if(!checkProximity(2, j, i, mazeCanvas)){
-            optionSet += 2
-        }
-        if(!checkProximity(3, j, i, mazeCanvas)){
-            optionSet += 3
-        }
-        optionSet
+    def moveOptions(j: Int, i: Int, mazeCanvas: Array[Array[Int]]): List[Int] ={
+        val directionSet = List(0, 1, 2, 3)
+        val moveOptionSet = directionSet.flatMap(direction => checkProximity(direction, j, i, mazeCanvas))
+        moveOptionSet
     }
 
     @tailrec
@@ -83,7 +72,7 @@ class MazeGen{
         val availableDirections = moveOptions(j, i, mazeCanvas)
 
         if (availableDirections.isEmpty) {
-            return (mazeCanvas, traceback.tail)
+            return (mazeCanvas, traceback.take(traceback.length - 1))
         }
 
         val updatedTraceback = updateTraceback(traceback, j, i, availableDirections)
@@ -113,7 +102,7 @@ class MazeGen{
         }
     }
 
-    private def updateTraceback(traceback: List[(Int, Int)], j: Int, i: Int, availableDirections: ListBuffer[Int]): List[(Int, Int)]= {
+    private def updateTraceback(traceback: List[(Int, Int)], j: Int, i: Int, availableDirections: List[Int]): List[(Int, Int)]= {
         if (availableDirections.length > 1) {
             val updatedTraceback =  (j, i) :: traceback
             return updatedTraceback
