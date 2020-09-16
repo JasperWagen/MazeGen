@@ -1,5 +1,6 @@
 package services.mazeGen
 
+import scala.annotation.tailrec
 import scala.collection.mutable.ListBuffer
 import scala.util.Random.nextInt
 import scala.util.control.Breaks.{break, breakable}
@@ -75,43 +76,54 @@ class MazeGen{
         optionSet
     }
 
-    def pathCreator(jInput: Int, iInput: Int, mazeCanvas: Array[Array[Int]]): (Array[Array[Int]], ListBuffer[(Int, Int)]) = {
-        var i = iInput; var j = jInput
-        var traceBack = new ListBuffer[(Int, Int)]
+    @tailrec
+    final def pathCreator(jInput: Int, iInput: Int, mazeCanvas: Array[Array[Int]], traceback: List[(Int, Int)]): (Array[Array[Int]], List[(Int, Int)])= {
+        val i = iInput; val j = jInput
 
-        breakable {
-            while (true) {
-                val avalibleDirections = moveOptions(j, i, mazeCanvas)
+        val availableDirections = moveOptions(j, i, mazeCanvas)
 
-                if (avalibleDirections.isEmpty) {
-                    break()
-                }
-
-                if (avalibleDirections.size > 1){
-                    (j, i) +=: traceBack
-                }
-
-                val direction = avalibleDirections(nextInt(avalibleDirections.size))
-
-                if (direction == 0) {
-                    mazeCanvas(j - 1)(i) = 1
-                    j -= 1
-                } else if (direction == 1) {
-                    mazeCanvas(j)(i + 1) = 1
-                    i += 1
-                } else if (direction == 2) {
-                    mazeCanvas(j + 1)(i) = 1
-                    j += 1
-                } else if (direction == 3) {
-                    mazeCanvas(j)(i - 1) = 1
-                    i -= 1
-                }
-            }
+        if (availableDirections.isEmpty) {
+            return (mazeCanvas, traceback.tail)
         }
-        (mazeCanvas, traceBack)
+
+        val updatedTraceback = updateTraceback(traceback, j, i, availableDirections)
+
+        val direction = availableDirections(nextInt(availableDirections.size))
+
+        if (direction == 0) {
+            mazeCanvas(j - 1)(i) = 1
+            val jUpdate = j - 1
+            val iUpdate = i
+            pathCreator(jUpdate, iUpdate, mazeCanvas, updatedTraceback)
+        } else if (direction == 1) {
+            mazeCanvas(j)(i + 1) = 1
+            val jUpdate = j
+            val iUpdate = i + 1
+            pathCreator(jUpdate, iUpdate, mazeCanvas, updatedTraceback)
+        } else if (direction == 2) {
+            mazeCanvas(j + 1)(i) = 1
+            val jUpdate = j + 1
+            val iUpdate = i
+            pathCreator(jUpdate, iUpdate, mazeCanvas, updatedTraceback)
+        } else {
+            mazeCanvas(j)(i - 1) = 1
+            val jUpdate = j
+            val iUpdate = i - 1
+            pathCreator(jUpdate, iUpdate, mazeCanvas, updatedTraceback)
+        }
     }
 
-    def addExit(mazeCanvas: Array[Array[Int]]): Array[Array[Int]] = {
+    private def updateTraceback(traceback: List[(Int, Int)], j: Int, i: Int, availableDirections: ListBuffer[Int]): List[(Int, Int)]= {
+        if (availableDirections.length > 1) {
+            val updatedTraceback =  (j, i) :: traceback
+            return updatedTraceback
+        }
+        val updatedTraceback = traceback
+        updatedTraceback
+    }
+
+    @tailrec
+    final def addExit(mazeCanvas: Array[Array[Int]]): Array[Array[Int]] = {
         val exitLoc = nextInt(mazeCanvas.length-2)+1
         if(mazeCanvas(exitLoc)(mazeCanvas(0).length-2)== 0){
             addExit(mazeCanvas)

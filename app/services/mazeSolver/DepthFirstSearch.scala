@@ -2,14 +2,16 @@ package services.mazeSolver
 
 import scala.collection.immutable.List
 import services.mazeGen.MazeGen
+
 import scala.util.control.Breaks.breakable
 import scala.annotation
+import scala.annotation.tailrec
 
 
 class DepthFirstSearch extends CheckNodes {
-    def nodeIteration(position: (Int, Int), maze: Array[Array[Int]], visitedNodes: Array[Array[Int]], searchPath: List[(Int, Int)]):
+    @tailrec
+    final def nodeIteration(position: (Int, Int), maze: Array[Array[Int]], visitedNodes: Array[Array[Int]], searchPath: List[(Int, Int)]):
         List[(Int, Int)] = {
-
 
         val (j, i) = position
         //checks if at exit
@@ -25,6 +27,7 @@ class DepthFirstSearch extends CheckNodes {
 
         if(availableNodes.isEmpty){
             //pop stack
+
             val updatedSearchPath = searchPath.tail
             val updatedPosition = searchPath.head
 
@@ -48,7 +51,6 @@ class DepthFirstSearch extends CheckNodes {
 
         val position = findEntrance(maze)
 
-        //@annotation.tailrec
         nodeIteration(position, maze, visitedNodes, searchPath)
 
     }
