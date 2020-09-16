@@ -18,7 +18,7 @@ class MazeGen{
         mazeMatrix
     }
 
-    def checkProximity(direction: Int, i: Int, j: Int, mazeCanvas: Array[Array[Int]]): Boolean = {
+    def checkProximity(direction: Int, j: Int, i: Int, mazeCanvas: Array[Array[Int]]): Boolean = {
         try {
             //TODO: collapse i, j down into type (point)
             //TODO: direction enumeration
@@ -58,37 +58,37 @@ class MazeGen{
         false
     }
 
-    def moveOptions(i: Int, j: Int, mazeCanvas: Array[Array[Int]]): ListBuffer[Int] ={
+    def moveOptions(j: Int, i: Int, mazeCanvas: Array[Array[Int]]): ListBuffer[Int] ={
         var optionSet = ListBuffer[Int]()
-        if(!checkProximity(0, i, j, mazeCanvas)){
+        if(!checkProximity(0, j, i, mazeCanvas)){
             optionSet += 0
         }
-        if(!checkProximity(1, i, j, mazeCanvas)){
+        if(!checkProximity(1, j, i, mazeCanvas)){
             optionSet += 1
         }
-        if(!checkProximity(2, i, j, mazeCanvas)){
+        if(!checkProximity(2, j, i, mazeCanvas)){
             optionSet += 2
         }
-        if(!checkProximity(3, i, j, mazeCanvas)){
+        if(!checkProximity(3, j, i, mazeCanvas)){
             optionSet += 3
         }
         optionSet
     }
 
-    def pathCreator(iInput: Int, jInput: Int, mazeCanvas: Array[Array[Int]]): (Array[Array[Int]], ListBuffer[(Int, Int)]) = {
+    def pathCreator(jInput: Int, iInput: Int, mazeCanvas: Array[Array[Int]]): (Array[Array[Int]], ListBuffer[(Int, Int)]) = {
         var i = iInput; var j = jInput
         var traceBack = new ListBuffer[(Int, Int)]
 
         breakable {
             while (true) {
-                val avalibleDirections = moveOptions(i, j, mazeCanvas)
+                val avalibleDirections = moveOptions(j, i, mazeCanvas)
 
                 if (avalibleDirections.isEmpty) {
                     break()
                 }
 
                 if (avalibleDirections.size > 1){
-                    (i, j) +=: traceBack
+                    (j, i) +=: traceBack
                 }
 
                 val direction = avalibleDirections(nextInt(avalibleDirections.size))
@@ -121,13 +121,21 @@ class MazeGen{
         }
     }
 
-    def addEntranceOnLeftSide(mazeCanvas: Array[Array[Int]]): (Array[Array[Int]], (Int, Int)) = {
+    def findRandomStartLocOnLeftSide(mazeCanvas: Array[Array[Int]]): (Int, Int) = {
         val height = mazeCanvas.length
-        val startLocationJ = nextInt(height-2)+1
+        val offsetTop = 2
+        val offsetBottom = 1
+        val startLocationJ = nextInt(height-offsetTop)+offsetBottom
         val startLocationI = 0
+        (startLocationJ, startLocationI)
+    }
+
+    def addEntrance(mazeCanvas: Array[Array[Int]], startLocation: (Int, Int)): Array[Array[Int]] = {
+
+        val (startLocationJ, startLocationI) = startLocation
         val mazeWithEntrance = mazeCanvas.updated(startLocationJ, mazeCanvas(startLocationJ).updated(startLocationI, 1))
-        val startLocation = (startLocationJ, startLocationI)
-        (mazeWithEntrance, startLocation)
+
+        mazeWithEntrance
     }
 
 

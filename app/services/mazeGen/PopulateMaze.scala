@@ -7,15 +7,16 @@ class PopulateMaze extends MazeGen {
     def populate(mazeCanvas: Array[Array[Int]]): Array[Array[Int]] = {
         // TODO: magic numbers
 
-        val (mazeWithEntrance, (j, i)) = addEntranceOnLeftSide(mazeCanvas)
+        val startLocation = findRandomStartLocOnLeftSide(mazeCanvas)
+        val mazeWithEntrance= addEntrance(mazeCanvas, startLocation)
 
-        val traceback = ListBuffer((i, j))
+        val traceback = ListBuffer(startLocation)
         var updatedCanvas = mazeWithEntrance
 
         var x = 0
         while(x < traceback.size){
-            val (i, j) = traceback(x)
-            val (recursiveCanvas, tracebackUpdate) = pathCreator(i, j, updatedCanvas)
+            val (j, i) = traceback(x)
+            val (recursiveCanvas, tracebackUpdate) = pathCreator(j, i, updatedCanvas)
             traceback.addAll(tracebackUpdate)
             updatedCanvas = recursiveCanvas
             x += 1
