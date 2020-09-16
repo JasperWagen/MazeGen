@@ -20,6 +20,9 @@ class MazeGen{
 
     def checkProximity(direction: Int, i: Int, j: Int, mazeCanvas: Array[Array[Int]]): Boolean = {
         try {
+            //TODO: collapse i, j down into type (point)
+            //TODO: direction enumeration
+            //TODO: rename
             if (direction == 0) {
                 for (a <- -1 to 1; b <- -2 to -1) {
                     if (mazeCanvas(j + b)(i + a) == 1) {
@@ -116,6 +119,15 @@ class MazeGen{
             mazeCanvas(exitLoc)(mazeCanvas(0).length - 1) = 1
             mazeCanvas
         }
+    }
+
+    def addEntranceOnLeftSide(mazeCanvas: Array[Array[Int]]): (Array[Array[Int]], (Int, Int)) = {
+        val height = mazeCanvas.length
+        val startLocationJ = nextInt(height-2)+1
+        val startLocationI = 0
+        val mazeWithEntrance = mazeCanvas.updated(startLocationJ, mazeCanvas(startLocationJ).updated(startLocationI, 1))
+        val startLocation = (startLocationJ, startLocationI)
+        (mazeWithEntrance, startLocation)
     }
 
 

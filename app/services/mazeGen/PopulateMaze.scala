@@ -5,14 +5,12 @@ import scala.util.Random.nextInt
 
 class PopulateMaze extends MazeGen {
     def populate(mazeCanvas: Array[Array[Int]]): Array[Array[Int]] = {
-        val startLoc = nextInt(mazeCanvas.length-2)+1
-        mazeCanvas(startLoc)(0) = 1
+        // TODO: magic numbers
 
-        val i = 0
-        val j = startLoc
+        val (mazeWithEntrance, (j, i)) = addEntranceOnLeftSide(mazeCanvas)
 
         val traceback = ListBuffer((i, j))
-        var updatedCanvas = mazeCanvas
+        var updatedCanvas = mazeWithEntrance
 
         var x = 0
         while(x < traceback.size){

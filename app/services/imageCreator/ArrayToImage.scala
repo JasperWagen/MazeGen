@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage
 class ArrayToImage {
     //Contains methods for creating a buffered image object based on a 2D array (createImg) and then mapping the array
     // values to specified colors in the image (mapArrayToImg)
+
     def createImg(mazeCanvas: Array[Array[Int]], bgColor: Int, scale: Int): BufferedImage = {
         val height = mazeCanvas.length*scale
         val width = mazeCanvas(0).length*scale
@@ -14,6 +15,8 @@ class ArrayToImage {
         for(i <- 0 until img.getWidth(); j <- 0 until img.getHeight()){
             img.setRGB(i, j, bgColor)
         }
+
+
         img
     }
 
