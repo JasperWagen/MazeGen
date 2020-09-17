@@ -27,8 +27,8 @@ class PopulateMaze extends MazeGen {
             return recursionMaze
         }
 
-        val (j, i) = traceback.last
-        val (updatedRecursionMaze, updatedTraceback) = pathCreator(j, i, recursionMaze, traceback)
+        val position = traceback.last
+        val (updatedRecursionMaze, updatedTraceback) = pathCreator(position, recursionMaze, traceback)
 
         val updatedIterationCount = iterationCount + 1
         createPathRecursion(updatedIterationCount, updatedTraceback, updatedRecursionMaze)

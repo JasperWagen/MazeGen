@@ -5,6 +5,7 @@ import javax.imageio.ImageIO
 import services.imageCreator.ArrayToImage
 import services.{imageCreator, mazeGen}
 import services.mazeGen._
+import models.mazeInfo.MazeDimensions
 
 
 object MazeSolverTest {
@@ -14,13 +15,15 @@ object MazeSolverTest {
         //default values
         val width = 10
         val height = 10
+        val mazeDimensions = MazeDimensions(width, height)
+
         val bgIntColor = 4934475
         val fgIntColor = 13158600
 
         val bgHexColor = "#" + Integer.toHexString(bgIntColor)
         val fgHexColor = "#" + Integer.toHexString(fgIntColor)
 
-        val canvas = maze.canvas(width, height)
+        val canvas = maze.canvas(mazeDimensions)
         val popCanvas = maze.populate(canvas)
 
         val imgCreator = new imageCreator.MazeImgCreator
@@ -35,7 +38,7 @@ object MazeSolverTest {
             println()
         }
         val searchPath = dfSearch.search(popCanvas)
-        val searchArr = dfSearch.mapSearchPathToArr(searchPath, popCanvas)
+        val searchArr = dfSearch.mapSearchPathToArr(searchPath, popCanvas, mazeDimensions)
         val solvedMazeImg = arrayToImage.mapArrayToImg(searchArr, mazeImg, 16711680, 20, 6F)
 
         ImageIO.write(solvedMazeImg, "png", new File("public/images/mazeBucket/TEST.png"))
@@ -47,5 +50,11 @@ object MazeSolverTest {
 //        }
 
 
+//        val j = 1
+//        val directionUpdate = Map("north" -> (j - 1))
+//        val jUpdate = directionUpdate("north")
+//        print(jUpdate)
     }
+
+
 }

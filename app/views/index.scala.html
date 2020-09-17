@@ -1,7 +1,12 @@
-@(mazeForm: Form[MazeForm], height: Int, width: Int, bgColor: String, fgColor: String)(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+@import models.mazeInfo.MazeDimensions
+
+@(mazeForm: Form[MazeForm], mazeDimensions: MazeDimensions, bgColor: String, fgColor: String)(implicit request: RequestHeader, messagesProvider: MessagesProvider)
 
 @import helper.Implicits._
 @import helper._
+
+@width = {mazeDimensions.width}
+@height = {mazeDimensions.height}
 
 @main("Maze Generator") {
   <div class="main">
@@ -15,10 +20,10 @@
           @CSRF.formField
           <div id="sizeControls">
             @b4.range(mazeForm("Width"), Symbol("_label") -> "Width (5 - 150):", Symbol("min") -> 10, Symbol("max") -> 150,
-                      Symbol("step") -> 1, Symbol("value") -> width )
+                      Symbol("step") -> 1, Symbol("value") -> mazeDimensions.width )
 
             @b4.range(mazeForm("Height"), Symbol("_label") -> "Height (5 - 150):", Symbol("min") -> 10, Symbol("max") -> 150,
-                      Symbol("step") -> 1, Symbol("value") -> height)
+                      Symbol("step") -> 1, Symbol("value") -> mazeDimensions.height)
           </div>
           <div id="colorControls">
             @b4.color(mazeForm("BGColor"), Symbol("_label") -> "Wall Color:", Symbol("value") -> bgColor)

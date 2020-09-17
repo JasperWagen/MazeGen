@@ -2,6 +2,7 @@ package services.mazeSolver
 
 import scala.collection.immutable.List
 import services.mazeGen.MazeGen
+import models.mazeInfo.MazeDimensions
 
 import scala.util.control.Breaks.breakable
 import scala.annotation
@@ -46,7 +47,8 @@ class DepthFirstSearch extends CheckNodes {
             return List()
         }
         val mazeGen = new MazeGen
-        val visitedNodes = mazeGen.canvas(maze(0).length, maze.length)
+        val mazeDimensions = MazeDimensions(maze(0).length, maze.length)
+        val visitedNodes = mazeGen.canvas(mazeDimensions)
         val searchPath: List[(Int, Int)] = List()
 
         val position = findEntrance(maze)
@@ -55,9 +57,9 @@ class DepthFirstSearch extends CheckNodes {
 
     }
 
-    def mapSearchPathToArr(searchPath: List[(Int, Int)], maze: Array[Array[Int]]): Array[Array[Int]] = {
+    def mapSearchPathToArr(searchPath: List[(Int, Int)], maze: Array[Array[Int]], mazeDimensions: MazeDimensions): Array[Array[Int]] = {
         val mazeGen = new MazeGen
-        val searchArrInit = mazeGen.canvas(maze(0).length, maze.length)
+        val searchArrInit = mazeGen.canvas(mazeDimensions)
 
         val searchArr = searchPathRec(searchPath, searchArrInit)
 

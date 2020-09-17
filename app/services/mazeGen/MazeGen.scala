@@ -1,56 +1,36 @@
 package services.mazeGen
 
 import scala.annotation.tailrec
-import scala.collection.mutable.ListBuffer
 import scala.util.Random.nextInt
-import scala.util.control.Breaks.{break, breakable}
+
+import models.mazeInfo.MazeDimensions
 
 
-class MazeGen{
+class MazeGen extends {
     //Contains the methods required to, given height and width, create a Maze as a 2D binary array object.
     //Where 0 represents the walls of the maze and 1 represents the paths
-    def canvas(width: Int, height: Int): Array[Array[Int]] ={
+    def canvas(mazeDimensions: MazeDimensions): Array[Array[Int]] ={
+        val width = mazeDimensions.width
+        val height = mazeDimensions.height
+
         val mazeMatrix = Array.ofDim[Int](height,width)
-        for(i <- mazeMatrix.indices){
-            for(j <- mazeMatrix(0).indices){
-                mazeMatrix(i)(j) = 0
+        for(j <- mazeMatrix.indices){
+            for(i <- mazeMatrix(0).indices){
+                mazeMatrix(j)(i) = 0
             }
         }
         mazeMatrix
     }
 
-    def checkProximity(direction: Int, j: Int, i: Int, mazeCanvas: Array[Array[Int]]): Option[Int] = {
+    def checkForPathProximity(direction: String, position: (Int, Int), mazeCanvas: Array[Array[Int]]): Option[String] = {
+        val (j, i) = position
+        val jPathProximityRange = Map("north" -> (-2 to -1), "east" -> (-1 to 1), "south" -> (1 to 2), "west" -> (-1 to 1))
+        val iPathProximityRange = Map("north" -> (-1 to 1), "east" -> (1 to 2), "south" -> (-1 to 1), "west" -> (-2 to -1))
         try {
-            //TODO: collapse i, j down into type (point)
-            //TODO: direction enumeration
-            //TODO: rename
-            if (direction == 0) {
-                for (a <- -1 to 1; b <- -2 to -1) {
-                    if (mazeCanvas(j + b)(i + a) == 1) {
-
-                        return None
-                    }
-                }
-            } else if (direction == 1) {
-                for (a <- 1 to 2; b <- -1 to 1) {
-                    if (mazeCanvas(j + b)(i + a) == 1) {
-
-                        return None
-                    }
-                }
-            } else if (direction == 2) {
-                for (a <- -1 to 1; b <- 1 to 2) {
-                    if (mazeCanvas(j + b)(i + a) == 1) {
-
-                        return None
-                    }
-                }
-            } else if (direction == 3) {
-                for (a <- -2 to -1; b <- -1 to 1) {
-                    if (mazeCanvas(j + b)(i + a) == 1) {
-
-                        return None
-                    }
+            //TODO: Try remove if statement
+            for (jCheckIndex <- jPathProximityRange(direction); iCheckIndex <- iPathProximityRange(direction)) {
+                if (mazeCanvas(j + jCheckIndex)(i + iCheckIndex) == 1) {
+                    return None
                 }
             }
         } catch {
@@ -59,52 +39,38 @@ class MazeGen{
         Some(direction)
     }
 
-    def moveOptions(j: Int, i: Int, mazeCanvas: Array[Array[Int]]): List[Int] ={
-        val directionSet = List(0, 1, 2, 3)
-        val moveOptionSet = directionSet.flatMap(direction => checkProximity(direction, j, i, mazeCanvas))
+    def moveOptions(position: (Int, Int), mazeCanvas: Array[Array[Int]]): List[String] ={
+        val directionSet = List("north", "east", "south", "west")
+        val moveOptionSet = directionSet.flatMap(direction => checkForPathProximity(direction, position, mazeCanvas))
         moveOptionSet
     }
 
     @tailrec
-    final def pathCreator(jInput: Int, iInput: Int, mazeCanvas: Array[Array[Int]], traceback: List[(Int, Int)]): (Array[Array[Int]], List[(Int, Int)])= {
-        val i = iInput; val j = jInput
+    final def pathCreator(position: (Int, Int), mazeCanvas: Array[Array[Int]], traceback: List[(Int, Int)]): (Array[Array[Int]], List[(Int, Int)])= {
+        val (j, i) = position
 
-        val availableDirections = moveOptions(j, i, mazeCanvas)
+        val availableDirections = moveOptions(position, mazeCanvas)
 
         if (availableDirections.isEmpty) {
             return (mazeCanvas, traceback.take(traceback.length - 1))
         }
 
-        val updatedTraceback = updateTraceback(traceback, j, i, availableDirections)
+        val updatedTraceback = updateTraceback(traceback, position, availableDirections)
 
         val direction = availableDirections(nextInt(availableDirections.size))
 
-        if (direction == 0) {
-            mazeCanvas(j - 1)(i) = 1
-            val jUpdate = j - 1
-            val iUpdate = i
-            pathCreator(jUpdate, iUpdate, mazeCanvas, updatedTraceback)
-        } else if (direction == 1) {
-            mazeCanvas(j)(i + 1) = 1
-            val jUpdate = j
-            val iUpdate = i + 1
-            pathCreator(jUpdate, iUpdate, mazeCanvas, updatedTraceback)
-        } else if (direction == 2) {
-            mazeCanvas(j + 1)(i) = 1
-            val jUpdate = j + 1
-            val iUpdate = i
-            pathCreator(jUpdate, iUpdate, mazeCanvas, updatedTraceback)
-        } else {
-            mazeCanvas(j)(i - 1) = 1
-            val jUpdate = j
-            val iUpdate = i - 1
-            pathCreator(jUpdate, iUpdate, mazeCanvas, updatedTraceback)
-        }
+        val directionUpdate = Map("north" -> (j -1, i), "east" -> (j, i + 1), "south" -> (j + 1, i), "west" -> (j, i -1))
+
+        val updatedPosition = directionUpdate(direction)
+        val (jUpdate, iUpdate) = updatedPosition
+
+        val updatedMazeCanvas = mazeCanvas.updated(jUpdate, mazeCanvas(jUpdate).updated(iUpdate, 1))
+        pathCreator(updatedPosition, updatedMazeCanvas, updatedTraceback)
     }
 
-    private def updateTraceback(traceback: List[(Int, Int)], j: Int, i: Int, availableDirections: List[Int]): List[(Int, Int)]= {
+    private def updateTraceback(traceback: List[(Int, Int)], position: (Int, Int), availableDirections: List[String]): List[(Int, Int)]= {
         if (availableDirections.length > 1) {
-            val updatedTraceback =  (j, i) :: traceback
+            val updatedTraceback =  position :: traceback
             return updatedTraceback
         }
         val updatedTraceback = traceback

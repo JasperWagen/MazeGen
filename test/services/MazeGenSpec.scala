@@ -27,7 +27,7 @@ class MazeGenSpec extends AnyFunSuite{
                 inputMatrix(i)(j) = 0
             }
         }
-        assert(!mazeGen.checkProximity(0, 1, 2, inputMatrix))
+        assert(mazeGen.checkForPathProximity(0, (2, 1), inputMatrix).contains(0))
     }
 
     test("proximity detection N true"){
@@ -38,7 +38,7 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
         inputMatrix(0)(0) = 1
-        assert(mazeGen.checkProximity(0, 1, 2, inputMatrix))
+        assert(mazeGen.checkForPathProximity(0, (2, 1), inputMatrix).isEmpty)
     }
 
     test("proximity detection E false"){
@@ -49,7 +49,7 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
 
-        assert(!mazeGen.checkProximity(1, 0, 1, inputMatrix))
+        assert(mazeGen.checkForPathProximity(1, (1, 0), inputMatrix).contains(1))
     }
 
     test("proximity detection E true"){
@@ -60,7 +60,7 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
         inputMatrix(0)(2) = 1
-        assert(mazeGen.checkProximity(1, 0, 1, inputMatrix))
+        assert(mazeGen.checkForPathProximity(1, (1, 0), inputMatrix).isEmpty)
     }
 
     test("proximity detection S false"){
@@ -71,7 +71,7 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
 
-        assert(!mazeGen.checkProximity(2, 1, 0, inputMatrix))
+        assert(mazeGen.checkForPathProximity(2, (0, 1), inputMatrix).contains(2))
     }
 
     test("proximity detection S true"){
@@ -82,7 +82,7 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
         inputMatrix(2)(2) = 1
-        assert(mazeGen.checkProximity(2, 1, 0, inputMatrix))
+        assert(mazeGen.checkForPathProximity(2, (0, 1), inputMatrix).isEmpty)
     }
 
     test("proximity detection W false"){
@@ -93,7 +93,7 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
 
-        assert(!mazeGen.checkProximity(3, 2, 1, inputMatrix))
+        assert(mazeGen.checkForPathProximity(3, (1, 2), inputMatrix).contains(3))
     }
 
     test("proximity detection W true"){
@@ -104,7 +104,7 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
         inputMatrix(0)(0) = 1
-        assert(mazeGen.checkProximity(3, 2, 1, inputMatrix))
+        assert(mazeGen.checkForPathProximity(3, (1, 2), inputMatrix).isEmpty)
     }
 
     test("proximity detection OOB exception"){
@@ -115,7 +115,7 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
         inputMatrix(0)(0) = 1
-        assert(mazeGen.checkProximity(3, 2, 0, inputMatrix))
+        assert(mazeGen.checkForPathProximity(3, (1, 0), inputMatrix).isEmpty)
     }
 
     // --Movement Options--
@@ -126,7 +126,7 @@ class MazeGenSpec extends AnyFunSuite{
                 inputMatrix(i)(j) = 0
             }
         }
-        assert(mazeGen.moveOptions(3, 3, inputMatrix) == ListBuffer(0, 1, 2, 3))
+        assert(mazeGen.moveOptions((3, 3), inputMatrix) == List(0, 1, 2, 3))
     }
 
     test("find movement options N false"){
@@ -138,7 +138,7 @@ class MazeGenSpec extends AnyFunSuite{
         }
         inputMatrix(0)(3) = 1
 
-        assert(mazeGen.moveOptions(2, 2, inputMatrix) == ListBuffer(1, 2, 3))
+        assert(mazeGen.moveOptions((2, 2), inputMatrix) == List(1, 2, 3))
     }
 
     test("find movement options E false") {
@@ -150,7 +150,7 @@ class MazeGenSpec extends AnyFunSuite{
         }
         inputMatrix(2)(4) = 1
 
-        assert(mazeGen.moveOptions(2, 2, inputMatrix) == ListBuffer(0, 2, 3))
+        assert(mazeGen.moveOptions((2, 2), inputMatrix) == List(0, 2, 3))
     }
 
     test("find movement options S false") {
@@ -162,7 +162,7 @@ class MazeGenSpec extends AnyFunSuite{
         }
         inputMatrix(4)(2) = 1
 
-        assert(mazeGen.moveOptions(2, 2, inputMatrix) == ListBuffer(0, 1, 3))
+        assert(mazeGen.moveOptions((2, 2), inputMatrix) == List(0, 1, 3))
     }
 
     test("find movement options W false") {
@@ -174,7 +174,7 @@ class MazeGenSpec extends AnyFunSuite{
         }
         inputMatrix(3)(0) = 1
 
-        assert(mazeGen.moveOptions(2, 2, inputMatrix) == ListBuffer(0, 1, 2))
+        assert(mazeGen.moveOptions((2, 2), inputMatrix) == List(0, 1, 2))
     }
 
     test("find movement options OOB W") {
@@ -185,6 +185,6 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
 
-        assert(mazeGen.moveOptions(1, 2, inputMatrix) == ListBuffer(0, 1, 2))
+        assert(mazeGen.moveOptions((1, 2), inputMatrix) == List(0, 1, 2))
     }
 }
