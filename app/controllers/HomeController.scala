@@ -37,7 +37,6 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
         BadRequest("bad request")
       },
       mazeData => {
-        //gather data
         val width = mazeData.width
         val height = mazeData.height
         val bgHexColor = mazeData.bgColor
@@ -46,11 +45,9 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
 
         val mazeDimensions = MazeDimensions(width, height)
 
-        //convert color format
         val bgIntColor = Integer.parseInt(bgHexColor.substring(1), 16)
         val fgIntColor = Integer.parseInt(fgHexColor.substring(1), 16)
 
-        //generate maze
         val maze = new mazeGen.PopulateMaze
         val canvas = maze.canvas(mazeDimensions)
         val popCanvas = maze.populate(canvas)
@@ -61,13 +58,12 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
         val pathColor = fgIntColor
         val mazeImg = imgCreator.createMazeImg(popCanvas, bgColor, pathColor)
 
-        //wrap data
         val modifiedMazeData = ModifiedMazeData(mazeDimensions, bgHexColor, fgHexColor, solved)
 
         if(solved) {
           val dfSearch = new DepthFirstSearch
           val searchPath = dfSearch.search(popCanvas)
-          val searchArr = dfSearch.mapSearchPathToArr(searchPath, popCanvas, mazeDimensions)
+          val searchArr = dfSearch.mapSearchPathToArr(searchPath, mazeDimensions)
           val solvedMazeImg = arrayToImage.mapArrayToImg(searchArr, mazeImg, 16711680, 20, 100F)
 
           ImageIO.write(solvedMazeImg, "png", new File("public/images/mazeBucket/TEST.png"))
@@ -84,7 +80,6 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
   def index(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     val maze = new mazeGen.PopulateMaze
 
-    //default values
     val mazeDimensions = MazeDimensions(70, 40)
 
     val bgIntColor = 4934475

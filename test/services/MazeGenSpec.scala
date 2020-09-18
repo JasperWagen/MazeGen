@@ -15,7 +15,7 @@ class MazeGenSpec extends AnyFunSuite{
     }
 
     test("test 3x2 canvas creation"){
-        val mazeDimensions = MazeDimensions(2, 3)
+        val mazeDimensions = MazeDimensions(3, 2)
         val testCanvas = mazeGen.canvas(mazeDimensions)
         assert(testCanvas.length == 2)
         assert(testCanvas(0).length == 3)
@@ -29,7 +29,7 @@ class MazeGenSpec extends AnyFunSuite{
                 inputMatrix(i)(j) = 0
             }
         }
-        assert(mazeGen.checkForPathProximity("north", (2, 1), inputMatrix).contains(0))
+        assert(mazeGen.checkForPathProximity("north", (2, 1), inputMatrix).contains("north"))
     }
 
     test("proximity detection N true"){
@@ -51,7 +51,7 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
 
-        assert(mazeGen.checkForPathProximity("east", (1, 0), inputMatrix).contains(1))
+        assert(mazeGen.checkForPathProximity("east", (1, 0), inputMatrix).contains("east"))
     }
 
     test("proximity detection E true"){
@@ -73,7 +73,7 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
 
-        assert(mazeGen.checkForPathProximity("south", (0, 1), inputMatrix).contains(2))
+        assert(mazeGen.checkForPathProximity("south", (0, 1), inputMatrix).contains("south"))
     }
 
     test("proximity detection S true"){
@@ -95,7 +95,7 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
 
-        assert(mazeGen.checkForPathProximity("west", (1, 2), inputMatrix).contains(3))
+        assert(mazeGen.checkForPathProximity("west", (1, 2), inputMatrix).contains("west"))
     }
 
     test("proximity detection W true"){
@@ -187,6 +187,6 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
 
-        assert(mazeGen.moveOptions((1, 2), inputMatrix) == List("north", "east", "south"))
+        assert(mazeGen.moveOptions((2, 1), inputMatrix) == List("north", "east", "south"))
     }
 }

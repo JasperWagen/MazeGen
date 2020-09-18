@@ -38,7 +38,7 @@ object MazeSolverTest {
             println()
         }
         val searchPath = dfSearch.search(popCanvas)
-        val searchArr = dfSearch.mapSearchPathToArr(searchPath, popCanvas, mazeDimensions)
+        val searchArr = dfSearch.mapSearchPathToArr(searchPath, mazeDimensions)
         val solvedMazeImg = arrayToImage.mapArrayToImg(searchArr, mazeImg, 16711680, 20, 6F)
 
         ImageIO.write(solvedMazeImg, "png", new File("public/images/mazeBucket/TEST.png"))

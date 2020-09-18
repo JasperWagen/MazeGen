@@ -15,8 +15,8 @@ class DepthFirstSearch extends CheckNodes {
         List[(Int, Int)] = {
 
         val (j, i) = position
-        //checks if at exit
-        if(i == maze(0).length-1){
+
+        if(checkPositionIsExit(maze, i)){
             val updatedSearchPath = position :: searchPath
             val finalSearchPath = updatedSearchPath.reverse
             return finalSearchPath
@@ -28,7 +28,6 @@ class DepthFirstSearch extends CheckNodes {
 
         if(availableNodes.isEmpty){
             //pop stack
-
             val updatedSearchPath = searchPath.tail
             val updatedPosition = searchPath.head
 
@@ -42,8 +41,12 @@ class DepthFirstSearch extends CheckNodes {
         }
     }
 
+    private def checkPositionIsExit(maze: Array[Array[Int]], i: Int): Boolean = {
+        i == maze(0).length - 1
+    }
+
     def search(maze: Array[Array[Int]]): List[(Int, Int)]={
-        if(maze(0).length == 0){
+        if(checkNullCase(maze)){
             return List()
         }
         val mazeGen = new MazeGen
@@ -57,7 +60,11 @@ class DepthFirstSearch extends CheckNodes {
 
     }
 
-    def mapSearchPathToArr(searchPath: List[(Int, Int)], maze: Array[Array[Int]], mazeDimensions: MazeDimensions): Array[Array[Int]] = {
+    private def checkNullCase(maze: Array[Array[Int]]): Boolean = {
+        maze(0).length == 0
+    }
+
+    def mapSearchPathToArr(searchPath: List[(Int, Int)], mazeDimensions: MazeDimensions): Array[Array[Int]] = {
         val mazeGen = new MazeGen
         val searchArrInit = mazeGen.canvas(mazeDimensions)
 
@@ -66,7 +73,8 @@ class DepthFirstSearch extends CheckNodes {
         searchArr
     }
 
-    def searchPathRec(searchPath: List[(Int, Int)], searchArr: Array[Array[Int]]): Array[Array[Int]] = {
+    @tailrec
+    final def searchPathRec(searchPath: List[(Int, Int)], searchArr: Array[Array[Int]]): Array[Array[Int]] = {
         if (searchPath.isEmpty){
             return searchArr
         }

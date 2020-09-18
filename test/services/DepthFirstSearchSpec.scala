@@ -75,7 +75,7 @@ class DepthFirstSearchSpec extends AnyFunSuite{
 
         for (i <- inputMaze.indices) {
             for (j <- inputMaze(0).indices) {
-                assert(depthFirstSearch.mapSearchPathToArr(searchPath, inputMaze, mazeDimensions)(i)(j) == searchArr(i)(j))
+                assert(depthFirstSearch.mapSearchPathToArr(searchPath, mazeDimensions)(i)(j) == searchArr(i)(j))
             }
         }
     }
@@ -94,7 +94,7 @@ class DepthFirstSearchSpec extends AnyFunSuite{
 
         for (i <- inputMaze.indices) {
             for (j <- inputMaze(0).indices) {
-                assert(depthFirstSearch.mapSearchPathToArr(searchPath, inputMaze, mazeDimensions)(i)(j) == searchArr(i)(j))
+                assert(depthFirstSearch.mapSearchPathToArr(searchPath, mazeDimensions)(i)(j) == searchArr(i)(j))
             }
         }
     }
@@ -122,7 +122,7 @@ class DepthFirstSearchSpec extends AnyFunSuite{
 
         for (i <- inputMaze.indices) {
             for (j <- inputMaze(0).indices) {
-                assert(depthFirstSearch.mapSearchPathToArr(searchPath, inputMaze, mazeDimensions)(i)(j) == searchArr(i)(j))
+                assert(depthFirstSearch.mapSearchPathToArr(searchPath, mazeDimensions)(i)(j) == searchArr(i)(j))
             }
         }
 
