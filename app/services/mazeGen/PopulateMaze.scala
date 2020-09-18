@@ -16,7 +16,7 @@ class PopulateMaze extends MazeGen {
         val iterationCount = 0
 
         val populatedMaze = createPathRecursion(iterationCount, traceback, recursionMaze)
-        //populatedMaze
+
         val finalMaze = addExit(populatedMaze)
         finalMaze
     }

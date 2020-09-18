@@ -9,11 +9,10 @@ import services._
 import play.api.mvc.ControllerComponents
 import services.imageCreator.ArrayToImage
 import services.mazeSolver.DepthFirstSearch
-import models.mazeInfo
+import models.mazeInfo.ModifiedMazeData
 import models.mazeInfo.MazeDimensions
 
-case class MazeForm(height: Int, width: Int, bgColor: String, fgColor: String)
-
+case class MazeForm(height: Int, width: Int, bgColor: String, fgColor: String, solved: Boolean)
 
 @Singleton
 class HomeController @Inject()(controllerComponents: ControllerComponents) extends AbstractController(controllerComponents)
@@ -26,7 +25,8 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
       "Height" -> number,
       "Width" -> number,
       "BGColor" -> text,
-      "FGColor" -> text
+      "FGColor" -> text,
+      "Solved" -> boolean
     )(MazeForm.apply)(MazeForm.unapply)
   )
 
@@ -42,8 +42,8 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
         val height = mazeData.height
         val bgHexColor = mazeData.bgColor
         val fgHexColor = mazeData.fgColor
+        val solved = mazeData.solved
 
-        println(width, height)
         val mazeDimensions = MazeDimensions(width, height)
 
         //convert color format
@@ -61,13 +61,21 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
         val pathColor = fgIntColor
         val mazeImg = imgCreator.createMazeImg(popCanvas, bgColor, pathColor)
 
-        val dfSearch = new DepthFirstSearch
-        val searchPath = dfSearch.search(popCanvas)
-        val searchArr = dfSearch.mapSearchPathToArr(searchPath, popCanvas, mazeDimensions)
-        val solvedMazeImg = arrayToImage.mapArrayToImg(searchArr, mazeImg, 16711680, 20, 100F)
+        //wrap data
+        val modifiedMazeData = ModifiedMazeData(mazeDimensions, bgHexColor, fgHexColor, solved)
 
-        ImageIO.write(solvedMazeImg, "png", new File("public/images/mazeBucket/TEST.png"))
-        Ok(views.html.index(mazeForm, mazeDimensions, bgHexColor, fgHexColor))
+        if(solved) {
+          val dfSearch = new DepthFirstSearch
+          val searchPath = dfSearch.search(popCanvas)
+          val searchArr = dfSearch.mapSearchPathToArr(searchPath, popCanvas, mazeDimensions)
+          val solvedMazeImg = arrayToImage.mapArrayToImg(searchArr, mazeImg, 16711680, 20, 100F)
+
+          ImageIO.write(solvedMazeImg, "png", new File("public/images/mazeBucket/TEST.png"))
+          Ok(views.html.index(mazeForm, modifiedMazeData))
+        }
+
+        ImageIO.write(mazeImg, "png", new File("public/images/mazeBucket/TEST.png"))
+        Ok(views.html.index(mazeForm, modifiedMazeData))
       }
     )
 
@@ -85,6 +93,8 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
     val bgHexColor = "#" + Integer.toHexString(bgIntColor)
     val fgHexColor = "#" + Integer.toHexString(fgIntColor)
 
+    val solved = false
+
     val canvas = maze.canvas(mazeDimensions)
     val popCanvas = maze.populate(canvas)
 
@@ -92,12 +102,11 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
     val arrayToImage = new ArrayToImage
     val mazeImg = imgCreator.createMazeImg(popCanvas, bgIntColor, fgIntColor)
 
-//    val dfSearch = new DepthFirstSearch
-//    val searchPath = dfSearch.search(popCanvas)
-//    val searchArr = dfSearch.mapSearchPathToArr(searchPath, popCanvas, mazeDimensions)
-//    val solvedMazeImg = arrayToImage.mapArrayToImg(searchArr, mazeImg, 16711680, 20, 100F)
+    //wrap data
+    val modifiedMazeData = ModifiedMazeData(mazeDimensions, bgHexColor, fgHexColor, solved)
+
 
     ImageIO.write(mazeImg, "png", new File("public/images/mazeBucket/TEST.png"))
-    Ok(views.html.index(mazeForm, mazeDimensions, bgHexColor, fgHexColor))
+    Ok(views.html.index(mazeForm, modifiedMazeData))
   }
 }

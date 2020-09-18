@@ -2,6 +2,7 @@ package services
 
 import org.scalatest.funsuite.AnyFunSuite
 import mazeGen.MazeGen
+import models.mazeInfo.MazeDimensions
 
 import scala.collection.mutable.ListBuffer
 
@@ -9,12 +10,13 @@ class MazeGenSpec extends AnyFunSuite{
 
     val mazeGen = new MazeGen
     test("test null canvas creation"){
-        assert(mazeGen.canvas(0, 0).length == 0)
-        assert(mazeGen.canvas(0, 0).length == 0)
+        val mazeDimensions = MazeDimensions(0, 0)
+        assert(mazeGen.canvas(mazeDimensions).length == 0)
     }
 
     test("test 3x2 canvas creation"){
-        val testCanvas = mazeGen.canvas(3, 2)
+        val mazeDimensions = MazeDimensions(2, 3)
+        val testCanvas = mazeGen.canvas(mazeDimensions)
         assert(testCanvas.length == 2)
         assert(testCanvas(0).length == 3)
     }
@@ -27,7 +29,7 @@ class MazeGenSpec extends AnyFunSuite{
                 inputMatrix(i)(j) = 0
             }
         }
-        assert(mazeGen.checkForPathProximity(0, (2, 1), inputMatrix).contains(0))
+        assert(mazeGen.checkForPathProximity("north", (2, 1), inputMatrix).contains(0))
     }
 
     test("proximity detection N true"){
@@ -38,7 +40,7 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
         inputMatrix(0)(0) = 1
-        assert(mazeGen.checkForPathProximity(0, (2, 1), inputMatrix).isEmpty)
+        assert(mazeGen.checkForPathProximity("north", (2, 1), inputMatrix).isEmpty)
     }
 
     test("proximity detection E false"){
@@ -49,7 +51,7 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
 
-        assert(mazeGen.checkForPathProximity(1, (1, 0), inputMatrix).contains(1))
+        assert(mazeGen.checkForPathProximity("east", (1, 0), inputMatrix).contains(1))
     }
 
     test("proximity detection E true"){
@@ -60,7 +62,7 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
         inputMatrix(0)(2) = 1
-        assert(mazeGen.checkForPathProximity(1, (1, 0), inputMatrix).isEmpty)
+        assert(mazeGen.checkForPathProximity("east", (1, 0), inputMatrix).isEmpty)
     }
 
     test("proximity detection S false"){
@@ -71,7 +73,7 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
 
-        assert(mazeGen.checkForPathProximity(2, (0, 1), inputMatrix).contains(2))
+        assert(mazeGen.checkForPathProximity("south", (0, 1), inputMatrix).contains(2))
     }
 
     test("proximity detection S true"){
@@ -82,7 +84,7 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
         inputMatrix(2)(2) = 1
-        assert(mazeGen.checkForPathProximity(2, (0, 1), inputMatrix).isEmpty)
+        assert(mazeGen.checkForPathProximity("south", (0, 1), inputMatrix).isEmpty)
     }
 
     test("proximity detection W false"){
@@ -93,7 +95,7 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
 
-        assert(mazeGen.checkForPathProximity(3, (1, 2), inputMatrix).contains(3))
+        assert(mazeGen.checkForPathProximity("west", (1, 2), inputMatrix).contains(3))
     }
 
     test("proximity detection W true"){
@@ -104,7 +106,7 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
         inputMatrix(0)(0) = 1
-        assert(mazeGen.checkForPathProximity(3, (1, 2), inputMatrix).isEmpty)
+        assert(mazeGen.checkForPathProximity("west", (1, 2), inputMatrix).isEmpty)
     }
 
     test("proximity detection OOB exception"){
@@ -115,7 +117,7 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
         inputMatrix(0)(0) = 1
-        assert(mazeGen.checkForPathProximity(3, (1, 0), inputMatrix).isEmpty)
+        assert(mazeGen.checkForPathProximity("west", (1, 0), inputMatrix).isEmpty)
     }
 
     // --Movement Options--
@@ -126,7 +128,7 @@ class MazeGenSpec extends AnyFunSuite{
                 inputMatrix(i)(j) = 0
             }
         }
-        assert(mazeGen.moveOptions((3, 3), inputMatrix) == List(0, 1, 2, 3))
+        assert(mazeGen.moveOptions((3, 3), inputMatrix) == List("north", "east", "south", "west"))
     }
 
     test("find movement options N false"){
@@ -138,7 +140,7 @@ class MazeGenSpec extends AnyFunSuite{
         }
         inputMatrix(0)(3) = 1
 
-        assert(mazeGen.moveOptions((2, 2), inputMatrix) == List(1, 2, 3))
+        assert(mazeGen.moveOptions((2, 2), inputMatrix) == List("east", "south", "west"))
     }
 
     test("find movement options E false") {
@@ -150,7 +152,7 @@ class MazeGenSpec extends AnyFunSuite{
         }
         inputMatrix(2)(4) = 1
 
-        assert(mazeGen.moveOptions((2, 2), inputMatrix) == List(0, 2, 3))
+        assert(mazeGen.moveOptions((2, 2), inputMatrix) == List("north", "south", "west"))
     }
 
     test("find movement options S false") {
@@ -162,7 +164,7 @@ class MazeGenSpec extends AnyFunSuite{
         }
         inputMatrix(4)(2) = 1
 
-        assert(mazeGen.moveOptions((2, 2), inputMatrix) == List(0, 1, 3))
+        assert(mazeGen.moveOptions((2, 2), inputMatrix) == List("north", "east", "west"))
     }
 
     test("find movement options W false") {
@@ -174,7 +176,7 @@ class MazeGenSpec extends AnyFunSuite{
         }
         inputMatrix(3)(0) = 1
 
-        assert(mazeGen.moveOptions((2, 2), inputMatrix) == List(0, 1, 2))
+        assert(mazeGen.moveOptions((2, 2), inputMatrix) == List("north", "east", "south"))
     }
 
     test("find movement options OOB W") {
@@ -185,6 +187,6 @@ class MazeGenSpec extends AnyFunSuite{
             }
         }
 
-        assert(mazeGen.moveOptions((1, 2), inputMatrix) == List(0, 1, 2))
+        assert(mazeGen.moveOptions((1, 2), inputMatrix) == List("north", "east", "south"))
     }
 }

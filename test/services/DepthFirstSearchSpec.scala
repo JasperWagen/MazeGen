@@ -2,6 +2,8 @@ package services
 import services.mazeSolver._
 import org.scalatest.funsuite.AnyFunSuite
 
+import models.mazeInfo.MazeDimensions
+
 class DepthFirstSearchSpec extends AnyFunSuite{
     val depthFirstSearch = new DepthFirstSearch
     test("00 search, check null case"){
@@ -69,9 +71,11 @@ class DepthFirstSearchSpec extends AnyFunSuite{
         val searchArr: Array[Array[Int]] = Array(
             Array(1))
 
+        val mazeDimensions = MazeDimensions(1, 1)
+
         for (i <- inputMaze.indices) {
             for (j <- inputMaze(0).indices) {
-                assert(depthFirstSearch.mapSearchPathToArr(searchPath, inputMaze)(i)(j) == searchArr(i)(j))
+                assert(depthFirstSearch.mapSearchPathToArr(searchPath, inputMaze, mazeDimensions)(i)(j) == searchArr(i)(j))
             }
         }
     }
@@ -86,10 +90,11 @@ class DepthFirstSearchSpec extends AnyFunSuite{
             Array(Array(1, 1),
                   Array(0, 0))
 
+        val mazeDimensions = MazeDimensions(2, 2)
 
         for (i <- inputMaze.indices) {
             for (j <- inputMaze(0).indices) {
-                assert(depthFirstSearch.mapSearchPathToArr(searchPath, inputMaze)(i)(j) == searchArr(i)(j))
+                assert(depthFirstSearch.mapSearchPathToArr(searchPath, inputMaze, mazeDimensions)(i)(j) == searchArr(i)(j))
             }
         }
     }
@@ -112,10 +117,12 @@ class DepthFirstSearchSpec extends AnyFunSuite{
             Array(0, 1, 1, 1, 1, 1),
             Array(0, 0, 0, 0, 0, 0))
 
+        val mazeDimensions = MazeDimensions(6, 5)
+
 
         for (i <- inputMaze.indices) {
             for (j <- inputMaze(0).indices) {
-                assert(depthFirstSearch.mapSearchPathToArr(searchPath, inputMaze)(i)(j) == searchArr(i)(j))
+                assert(depthFirstSearch.mapSearchPathToArr(searchPath, inputMaze, mazeDimensions)(i)(j) == searchArr(i)(j))
             }
         }
 

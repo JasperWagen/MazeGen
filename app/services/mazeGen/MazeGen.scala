@@ -6,7 +6,7 @@ import scala.util.Random.nextInt
 import models.mazeInfo.MazeDimensions
 
 
-class MazeGen extends {
+class MazeGen {
     //Contains the methods required to, given height and width, create a Maze as a 2D binary array object.
     //Where 0 represents the walls of the maze and 1 represents the paths
     def canvas(mazeDimensions: MazeDimensions): Array[Array[Int]] ={
