@@ -6,7 +6,7 @@ class ArrayToImage {
     //Contains methods for creating a buffered image object based on a 2D array (createImg) and then mapping the array
     // values to specified colors in the image (mapArrayToImg)
 
-    def createImg(mazeCanvas: Array[Array[Int]], bgColor: Int, scale: Int): BufferedImage = {
+    def createImg(mazeCanvas: Array[Array[Byte]], bgColor: Int, scale: Int): BufferedImage = {
         val height = mazeCanvas.length*scale
         val width = mazeCanvas(0).length*scale
         val img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
@@ -20,7 +20,7 @@ class ArrayToImage {
         img
     }
 
-    def mapArrayToImg(mazeCanvas: Array[Array[Int]], img: BufferedImage, pathColor: Int, scale: Int, squareSize: Float): BufferedImage = {
+    def mapArrayToImg(mazeCanvas: Array[Array[Byte]], img: BufferedImage, pathColor: Int, scale: Int, squareSize: Float): BufferedImage = {
         //Upper and lower bounds used here to make the path width greater than that of the walls
         val lowBound = -(scale/squareSize).toInt
         val upBound = scale + (scale/squareSize).toInt

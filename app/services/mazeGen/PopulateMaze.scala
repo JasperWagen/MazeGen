@@ -5,7 +5,7 @@ import scala.collection.mutable.ListBuffer
 import scala.util.Random.nextInt
 
 class PopulateMaze extends MazeGen {
-    def populate(mazeCanvas: Array[Array[Int]]): Array[Array[Int]] = {
+    def populate(mazeCanvas: Array[Array[Byte]]): Array[Array[Byte]] = {
 
         val startLocation = findRandomStartLocOnLeftSide(mazeCanvas)
         val mazeWithEntrance= addEntrance(mazeCanvas, startLocation)
@@ -22,7 +22,7 @@ class PopulateMaze extends MazeGen {
     }
 
     @tailrec
-    final def createPathRecursion(iterationCount: Int, traceback: List[(Int, Int)], recursionMaze: Array[Array[Int]]): Array[Array[Int]] = {
+    final def createPathRecursion(iterationCount: Int, traceback: List[(Int, Int)], recursionMaze: Array[Array[Byte]]): Array[Array[Byte]] = {
         if(traceback.isEmpty){
             return recursionMaze
         }

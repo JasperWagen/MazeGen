@@ -41,7 +41,6 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
         val height = mazeData.height
         val bgHexColor = mazeData.bgColor
         val fgHexColor = mazeData.fgColor
-        val solved = mazeData.solved
 
         val mazeDimensions = MazeDimensions(width, height)
 
@@ -58,9 +57,9 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
         val pathColor = fgIntColor
         val mazeImg = imgCreator.createMazeImg(popCanvas, bgColor, pathColor)
 
-        val modifiedMazeData = ModifiedMazeData(mazeDimensions, bgHexColor, fgHexColor, solved)
+        val modifiedMazeData = ModifiedMazeData(mazeDimensions, bgHexColor, fgHexColor, mazeData.solved)
 
-        if(solved) {
+        if(mazeData.solved) {
           val dfSearch = new DepthFirstSearch
           val searchPath = dfSearch.search(popCanvas)
           val searchArr = dfSearch.mapSearchPathToArr(searchPath, mazeDimensions)
