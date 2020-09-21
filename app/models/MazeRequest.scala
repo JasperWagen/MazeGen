@@ -1,5 +1,7 @@
 package models
 
-class MazeRequest {
+import models.mazeInfo.MazeDimensions
+
+class MazeRequest(val mazeDimensions: MazeDimensions)  {
 
 }
