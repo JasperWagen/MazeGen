@@ -14,6 +14,8 @@ import models.mazeInfo.MazeDimensions
 
 case class MazeForm(height: Int, width: Int, bgColor: String, fgColor: String, solved: Boolean)
 
+//TEST
+
 @Singleton
 class HomeController @Inject()(controllerComponents: ControllerComponents) extends AbstractController(controllerComponents)
   with play.api.i18n.I18nSupport {
