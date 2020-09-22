@@ -2,6 +2,8 @@ package controllers
 
 import java.io.File
 
+import java.nio.file
+import play.libs.Files._
 import javax.imageio.ImageIO
 import javax.inject._
 import play.api.mvc._
@@ -11,6 +13,7 @@ import services.imageCreator.ArrayToImage
 import services.mazeSolver.DepthFirstSearch
 import models.mazeInfo.ModifiedMazeData
 import models.mazeInfo.MazeDimensions
+import play.api.libs.Files
 
 case class MazeForm(height: Int, width: Int, bgColor: String, fgColor: String, solved: Boolean)
 
@@ -67,12 +70,12 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
           val searchArr = dfSearch.mapSearchPathToArr(searchPath, mazeDimensions)
           val solvedMazeImg = arrayToImage.mapArrayToImg(searchArr, mazeImg, 16711680, 20, 100F)
 
-          ImageIO.write(solvedMazeImg, "png", new File("public/images/mazeBucket/TEST.png"))
-          Ok(views.html.index(mazeForm, modifiedMazeData))
+          //ImageIO.write(solvedMazeImg, "png", new TemporaryFile("public/images/mazeBucket/TEST.png"))
+          Ok(views.html.index(mazeForm, modifiedMazeData, "nothing"))
         }
-
-        ImageIO.write(mazeImg, "png", new File("public/images/mazeBucket/TEST.png"))
-        Ok(views.html.index(mazeForm, modifiedMazeData))
+        //File.TemporaryFileCreator()
+        //ImageIO.write(mazeImg, "png", new File("public/images/mazeBucket/TEST.png"))
+        Ok(views.html.index(mazeForm, modifiedMazeData, "nothing"))
       }
     )
 
@@ -101,8 +104,12 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
     //wrap data
     val modifiedMazeData = ModifiedMazeData(mazeDimensions, bgHexColor, fgHexColor, solved)
 
+    val tempMazeImg = File.createTempFile("mazeImg", ".png")
+    ImageIO.write(mazeImg, "png", tempMazeImg)
 
-    ImageIO.write(mazeImg, "png", new File("public/images/mazeBucket/TEST.png"))
-    Ok(views.html.index(mazeForm, modifiedMazeData))
+    file.Files.move(file.Paths.get(tempMazeImg.getAbsolutePath), file.Paths.get("TEST.png"), file.StandardCopyOption.REPLACE_EXISTING)
+
+    //ImageIO.write(tempMazeImg, "png", new File("tempMazeImg.png"))
+    Ok(views.html.index(mazeForm, modifiedMazeData, tempMazeImg.getAbsolutePath))
   }
 }
