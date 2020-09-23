@@ -1,7 +1,7 @@
 @import models.mazeInfo.MazeDimensions
 @import models.mazeInfo.ModifiedMazeData
 
-@(mazeForm: Form[MazeForm], modifiedMazeData: ModifiedMazeData)(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+@(mazeForm: Form[MazeForm], modifiedMazeData: ModifiedMazeData, mazeImgPath: String)(implicit request: RequestHeader, messagesProvider: MessagesProvider)
 
 @import helper.Implicits._
 @import helper._
@@ -33,7 +33,8 @@
         }
       </div>
       <br>
-      <img id ="mazeImg" src="/assets/images/mazeBucket/TEST.png">
+      <img id ="mazeImg" src="/img@mazeImgPath">
+
     </div>
   </div>
 }

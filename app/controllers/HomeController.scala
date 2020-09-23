@@ -2,6 +2,8 @@ package controllers
 
 import java.io.File
 
+import java.nio.file
+import play.libs.Files._
 import javax.imageio.ImageIO
 import javax.inject._
 import play.api.mvc._
@@ -11,6 +13,7 @@ import services.imageCreator.ArrayToImage
 import services.mazeSolver.DepthFirstSearch
 import models.mazeInfo.ModifiedMazeData
 import models.mazeInfo.MazeDimensions
+import play.api.libs.Files
 
 case class MazeForm(height: Int, width: Int, bgColor: String, fgColor: String, solved: Boolean)
 
@@ -31,6 +34,12 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
       "Solved" -> boolean
     )(MazeForm.apply)(MazeForm.unapply)
   )
+
+  implicit val ec: scala.concurrent.ExecutionContext = scala.concurrent.ExecutionContext.global
+
+  def serveImg(imgPath: String) = Action {
+    Ok.sendFile(new java.io.File("/"+imgPath))
+  }
 
   def newMaze(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     mazeForm.bindFromRequest().fold(
@@ -66,13 +75,15 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
           val searchPath = dfSearch.search(popCanvas)
           val searchArr = dfSearch.mapSearchPathToArr(searchPath, mazeDimensions)
           val solvedMazeImg = arrayToImage.mapArrayToImg(searchArr, mazeImg, 16711680, 20, 100F)
+          val tempMazeImg = File.createTempFile("mazeImg", ".png")
 
-          ImageIO.write(solvedMazeImg, "png", new File("public/images/mazeBucket/TEST.png"))
-          Ok(views.html.index(mazeForm, modifiedMazeData))
+          ImageIO.write(mazeImg, "png", tempMazeImg)
+          Ok(views.html.index(mazeForm, modifiedMazeData, tempMazeImg.getAbsolutePath))
         }
+        val tempMazeImg = File.createTempFile("mazeImg", ".png")
+        ImageIO.write(mazeImg, "png", tempMazeImg)
 
-        ImageIO.write(mazeImg, "png", new File("public/images/mazeBucket/TEST.png"))
-        Ok(views.html.index(mazeForm, modifiedMazeData))
+        Ok(views.html.index(mazeForm, modifiedMazeData, tempMazeImg.getAbsolutePath))
       }
     )
 
@@ -101,8 +112,9 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
     //wrap data
     val modifiedMazeData = ModifiedMazeData(mazeDimensions, bgHexColor, fgHexColor, solved)
 
+    val tempMazeImg = File.createTempFile("mazeImg", ".png")
+    ImageIO.write(mazeImg, "png", tempMazeImg)
 
-    ImageIO.write(mazeImg, "png", new File("public/images/mazeBucket/TEST.png"))
-    Ok(views.html.index(mazeForm, modifiedMazeData))
+    Ok(views.html.index(mazeForm, modifiedMazeData, tempMazeImg.getAbsolutePath))
   }
 }
