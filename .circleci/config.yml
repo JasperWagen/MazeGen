@@ -65,20 +65,25 @@ jobs:
           name: create dist zip file
           command: cat /dev/null | sbt clean update dist
       - run:
+          name: change dir
+          command: cd target/universal
+      - run:
           name: unzip dist zip file
-          command: cat /dev/null | unzip target/universal/mazesite-1.0-SNAPSHOT.zip
+          command: unzip target/universal/mazesite-1.0-SNAPSHOT.zip
+
+      - run:
+          name: change dir
+          command: cd
 
       - run:
           name:
           command: ls target/universal/mazesite-1.0-SNAPSHOT
       #- run: docker cp target/universal/mazesite-1.0-SNAPSHOT target/universal/mazesite-1.0-SNAPSHOT
       - aws-cli/setup:
-#          account-url: AWS_ECR_ACCOUNT_URL
           aws-access-key-id: ACCESS_KEY_ID_IAM_ADMIN
           aws-secret-access-key: SECRET_ACCESS_KEY_IAM_ADMIN
           profile-name: IAMAdmin
           aws-region: AWS_REGION
-#          repo: mazegen
 
       - run:
           name: build docker
