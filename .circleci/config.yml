@@ -36,6 +36,12 @@ jobs:
       - run: cat /dev/null | sbt test:test
 
   create_and_push_img:
+    requires:
+      - build
+    filters:
+      branches:
+        only:
+          - master
     steps:
       - run:
           name: create dist zip file
@@ -55,8 +61,5 @@ workflows:
     - build
     - create_and_push_img
 
-      filters:
-        branches:
-          only:
-            - master
+
 
