@@ -80,6 +80,9 @@ jobs:
           aws-region: AWS_REGION
 
       - run:
+          name: aws login
+          command: aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 989081364380.dkr.ecr.eu-west-2.amazonaws.com
+      - run:
           name: build docker
           command: docker build -t mazegen .
       - run:
