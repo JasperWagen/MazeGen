@@ -65,22 +65,13 @@ jobs:
           name: create dist zip file
           command: cat /dev/null | sbt clean update dist
       - run:
-          name: change dir
-          command: cd target/universal
+          name: unzip
+          command: unzip target/universal/mazesite-1.0-SNAPSHOT.zip
       - run:
           name:
           command: ls
-      - run:
-          name: unzip dist zip file
-          command: unzip mazesite-1.0-SNAPSHOT.zip
 
-      - run:
-          name: change dir
-          command: cd
 
-      - run:
-          name:
-          command: ls target/universal/mazesite-1.0-SNAPSHOT
       #- run: docker cp target/universal/mazesite-1.0-SNAPSHOT target/universal/mazesite-1.0-SNAPSHOT
       - aws-cli/setup:
           aws-access-key-id: ACCESS_KEY_ID_IAM_ADMIN
