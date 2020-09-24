@@ -67,10 +67,7 @@ workflows:
       - create_and_push_img:
         - requires:
           -build
-        - filters:
-          branches:
-            only:
-              - master
+
 
 
 
