@@ -69,7 +69,7 @@ jobs:
           command: cd target/universal
       - run:
           name: unzip dist zip file
-          command: unzip target/universal/mazesite-1.0-SNAPSHOT.zip
+          command: unzip mazesite-1.0-SNAPSHOT.zip
 
       - run:
           name: change dir
