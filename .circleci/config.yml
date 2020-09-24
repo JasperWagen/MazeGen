@@ -48,11 +48,8 @@ jobs:
 
     steps:
       - run:
-          name: sbt init
-          command: sbt
-      - run:
           name: create dist zip file
-          command: sbt dist
+          command: sbt | sbt dist
       - run:
           name: unzip dist zip file
           command: unzip target/universal/mazesite-1.0-SNAPSHOT.zip
