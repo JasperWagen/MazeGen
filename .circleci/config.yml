@@ -65,11 +65,11 @@ jobs:
           name: unzip dist zip file
           command: cat /dev/null | unzip target/universal/mazesite-1.0-SNAPSHOT.zip
       - aws-ecr/build-and-push-image:
-          account-url: $AWS_ECR_ACCOUNT_URL
-          aws-access-key-id: $ACCESS_KEY_ID_IAM_ADMIN
-          aws-secret-access-key: $SECRET_ACCESS_KEY_IAM_ADMIN
+          account-url: AWS_ECR_ACCOUNT_URL
+          aws-access-key-id: ACCESS_KEY_ID_IAM_ADMIN
+          aws-secret-access-key: SECRET_ACCESS_KEY_IAM_ADMIN
           profile-name: IAMAdmin
-          region: $AWS_REGION_ENV_VAR_NAME
+          region: AWS_REGION_ENV_VAR_NAME
           repo: mazegen
 
 workflows:
@@ -77,7 +77,7 @@ workflows:
     jobs:
       #- test
       - create_and_push_img
-          #requires:
+          context: mazegen-aws
             #- test
           #filters:
             #branches:
