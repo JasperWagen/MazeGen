@@ -61,13 +61,8 @@ jobs:
       - run:
           name: create dist zip file
           command: cat /dev/null | sbt clean update dist
-
       - run:
           command: cat /dev/null | unzip target/universal/mazesite-1.0-SNAPSHOT.zip
-
-      - run:
-          command: locate mazesite-1.0-SNAPSHOT
-
       - setup_remote_docker
       - aws-ecr/build-and-push-image:
           account-url: AWS_ECR_ACCOUNT_URL
