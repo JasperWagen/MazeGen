@@ -36,8 +36,8 @@ jobs:
       - run: cat /dev/null | sbt test:test
 
   create_and_push_img:
-    docker:
-      - image: circleci/openjdk:8-jdk
+#    docker:
+#      - image: circleci/openjdk:8-jdk
 
     working_directory: ~/repo
 
@@ -65,7 +65,7 @@ jobs:
           name: unzip dist zip file
           command: cat /dev/null | unzip target/universal/mazesite-1.0-SNAPSHOT.zip
       - setup_remote_docker
-      - run: docker cp target/universal/mazesite-1.0-SNAPSHOT target/universal/mazesite-1.0-SNAPSHOT
+      #- run: docker cp target/universal/mazesite-1.0-SNAPSHOT target/universal/mazesite-1.0-SNAPSHOT
       - aws-ecr/build-and-push-image:
           account-url: AWS_ECR_ACCOUNT_URL
           aws-access-key-id: ACCESS_KEY_ID_IAM_ADMIN
