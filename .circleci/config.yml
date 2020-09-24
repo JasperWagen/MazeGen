@@ -1,33 +1,11 @@
 # Scala CircleCI 2.0 configuration file
 #
 # Check https://circleci.com/docs/2.0/sample-config/ for more details
-# dfgdfgdfgdg
-version: 2
+#
+version: 2.1
 
 orbs:
   aws-ecr: circleci/aws-ecr@6.12.2
-
-workflows:
-  build_and_push_image:
-    requires:
-      - build
-    filters:
-      branches:
-        only:
-          - master
-    jobs:
-      - run:
-          name: "create dist zip file"
-          command: sbt dist
-      - run:
-          name: "unzip dist zip file"
-          command: unzip target/universal/mazesite-1.0-SNAPSHOT.zip
-      - aws-ecr/build-and-push-image:
-          aws-access-key-id: ACCESS_KEY_ID_IAM_ADMIN
-          aws-secret-access-key: SECRET_ACCESS_KEY_IAM_ADMIN
-          profile-name: IAMAdmin
-          region: AWS_REGION_ENV_VAR_NAME
-          repo: mazegen
 
 jobs:
   build:
@@ -61,4 +39,30 @@ jobs:
 
       # run tests!
       - run: cat /dev/null | sbt test:test
+
+  create_and_push_img:
+    requires:
+      - build
+    steps:
+      - run:
+          name: "create dist zip file"
+          command: sbt dist
+      - run:
+          name: "unzip dist zip file"
+            command: unzip target/universal/mazesite-1.0-SNAPSHOT.zip
+      - aws-ecr/build-and-push-image:
+          aws-access-key-id: ACCESS_KEY_ID_IAM_ADMIN
+          aws-secret-access-key: SECRET_ACCESS_KEY_IAM_ADMIN
+          profile-name: IAMAdmin
+          region: AWS_REGION_ENV_VAR_NAME
+          repo: mazegen
+
+workflows:
+  build_and_push_image:
+    - build
+    - create_and_push_img
+      filters:
+        branches:
+          only:
+            - master
 
