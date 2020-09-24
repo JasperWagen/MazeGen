@@ -1,7 +1,7 @@
 # Scala CircleCI 2.0 configuration file
 #
 # Check https://circleci.com/docs/2.0/sample-config/ for more details
-#
+# dfgdfgdfgdg
 version: 2
 
 orbs:
@@ -9,9 +9,9 @@ orbs:
 
 workflows:
   build_and_push_image:
+    requires:
+      - build
     jobs:
-      requires:
-        - build
       filters:
         branches:
           only:
