@@ -50,6 +50,7 @@ jobs:
     steps:
       - run: echo 'export ARTIFACT_BUILD=$CIRCLE_PROJECT_REPONAME-$CIRCLE_BUILD_NUM.zip' >> $BASH_ENV
       - run:
+          name: install sbt
           command: |
             sudo apt update && sudo apt install -y curl
             curl -L -o sbt-$SBT_VERSION.deb https://dl.bintray.com/sbt/debian/sbt-$SBT_VERSION.deb
@@ -94,13 +95,14 @@ jobs:
 workflows:
   build_and_push_image:
     jobs:
-      #- test
+      - test
       - create_and_push_img:
           context: mazegen-aws
-            #- test
-          #filters:
-            #branches:
-              #only: master
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
 
 
 
