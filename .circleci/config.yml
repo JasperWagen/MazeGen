@@ -50,7 +50,7 @@ jobs:
       - run: echo 'export ARTIFACT_BUILD=$CIRCLE_PROJECT_REPONAME-$CIRCLE_BUILD_NUM.zip' >> $BASH_ENV
       - run:
           command: |
-            apt update && apt install -y curl
+            sudo apt update && sudo apt install -y curl
             curl -L -o sbt-$SBT_VERSION.deb https://dl.bintray.com/sbt/debian/sbt-$SBT_VERSION.deb
             dpkg -i sbt-$SBT_VERSION.deb
             rm sbt-$SBT_VERSION.deb
