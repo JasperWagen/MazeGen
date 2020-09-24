@@ -2,7 +2,7 @@ FROM openjdk:8-jre
 
 WORKDIR app
 
-COPY target/universal/mazesite-1.0-SNAPSHOT .
+ADD ./mazesite-1.0-SNAPSHOT .
 
 EXPOSE 80
 
