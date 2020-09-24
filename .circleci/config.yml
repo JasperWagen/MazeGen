@@ -76,7 +76,7 @@ jobs:
           aws-access-key-id: ACCESS_KEY_ID_IAM_ADMIN
           aws-secret-access-key: SECRET_ACCESS_KEY_IAM_ADMIN
           profile-name: IAMAdmin
-          aws-region: AWS_REGION
+          region: AWS_REGION
 
 #      - run:
 #          name: aws login
