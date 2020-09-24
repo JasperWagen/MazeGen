@@ -36,6 +36,7 @@ jobs:
       - run: cat /dev/null | sbt test:test
 
   create_and_push_img:
+    machine
 #    docker:
 #      - image: circleci/openjdk:8-jdk
 
