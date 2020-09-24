@@ -65,8 +65,8 @@ workflows:
     jobs:
       - build
       - create_and_push_img:
-        - requires:
-          -build
+        requires:
+          - build
 
 
 
