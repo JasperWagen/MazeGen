@@ -8,7 +8,7 @@ orbs:
   aws-ecr: circleci/aws-ecr@6.12.2
 
 jobs:
-  build1:
+  test:
     docker:
       - image: circleci/openjdk:8-jdk
 
@@ -63,10 +63,13 @@ jobs:
 workflows:
   build_and_push_image:
     jobs:
-      - build1
+      - test
       - create_and_push_img:
-        requires:
-          - build1
+          requires:
+            - test
+          filters:
+            branch:
+              only: build
 
 
 
