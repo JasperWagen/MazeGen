@@ -67,7 +67,7 @@ workflows:
   build_and_push_image:
     jobs:
       #- test
-      - create_and_push_img:
+      create_and_push_img:
           #requires:
             #- test
           #filters:
