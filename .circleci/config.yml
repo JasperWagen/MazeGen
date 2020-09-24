@@ -67,6 +67,10 @@ jobs:
       - run:
           name: unzip dist zip file
           command: cat /dev/null | unzip target/universal/mazesite-1.0-SNAPSHOT.zip
+
+      - run:
+          name:
+          command: ls target/universal/mazesite-1.0-SNAPSHOT
       #- run: docker cp target/universal/mazesite-1.0-SNAPSHOT target/universal/mazesite-1.0-SNAPSHOT
       - aws-cli/setup:
 #          account-url: AWS_ECR_ACCOUNT_URL
