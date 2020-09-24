@@ -23,6 +23,8 @@ assemblyMergeStrategy in assembly := {
  case x => MergeStrategy.first
 }
 
+PlayKeys.devSettings := Seq("play.server.http.port" -> "80")
+
 
 
 // Adds additional packages into Twirl
