@@ -48,6 +48,9 @@ jobs:
 
     steps:
       - run:
+          name: sbt init
+          command: sbt
+      - run:
           name: create dist zip file
           command: sbt dist
       - run:
@@ -63,7 +66,7 @@ jobs:
 workflows:
   build_and_push_image:
     jobs:
-      - test
+      #- test
       - create_and_push_img:
           requires:
             - test
