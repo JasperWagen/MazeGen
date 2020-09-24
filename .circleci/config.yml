@@ -36,15 +36,13 @@ jobs:
       - run: cat /dev/null | sbt test:test
 
   create_and_push_img:
-    requires:
-      - build
     steps:
       - run:
           name: create dist zip file
           command: sbt dist
       - run:
           name: unzip dist zip file
-            command: unzip target/universal/mazesite-1.0-SNAPSHOT.zip
+          command: unzip target/universal/mazesite-1.0-SNAPSHOT.zip
       - aws-ecr/build-and-push-image:
           aws-access-key-id: ACCESS_KEY_ID_IAM_ADMIN
           aws-secret-access-key: SECRET_ACCESS_KEY_IAM_ADMIN
@@ -56,6 +54,8 @@ workflows:
   build_and_push_image:
     - build
     - create_and_push_img
+      requires:
+        - build
       filters:
         branches:
           only:
