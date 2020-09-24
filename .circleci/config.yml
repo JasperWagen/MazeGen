@@ -81,10 +81,10 @@ jobs:
           command: docker build -t mazegen .
       - run:
           name: tag docker
-          command: cat /dev/null | docker tag mazegen:latest 989081364380.dkr.ecr.eu-west-2.amazonaws.com/mazegen:latest
+          command: docker tag mazegen:latest 989081364380.dkr.ecr.eu-west-2.amazonaws.com/mazegen:latest
       - run:
           name: push docker
-          command: cat /dev/null | docker push 989081364380.dkr.ecr.eu-west-2.amazonaws.com/mazegen:latest
+          command: docker push 989081364380.dkr.ecr.eu-west-2.amazonaws.com/mazegen:latest
 
 workflows:
   build_and_push_image:
