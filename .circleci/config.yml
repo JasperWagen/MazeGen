@@ -75,18 +75,10 @@ jobs:
           profile-name: IAMAdmin
           aws-region: AWS_REGION
 #          repo: mazegen
-      - run:
-          name: Install Docker client
-          command: |
-            set -x
-            VER="17.03.0-ce"
-            curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
-            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
-            sudo mv /tmp/docker/* /usr/bin
 
       - run:
           name: build docker
-          command: cat /dev/null | docker build -t mazegen .
+          command: docker build -t mazegen .
       - run:
           name: tag docker
           command: cat /dev/null | docker tag mazegen:latest 989081364380.dkr.ecr.eu-west-2.amazonaws.com/mazegen:latest
