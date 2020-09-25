@@ -67,12 +67,7 @@ jobs:
       - run:
           name: unzip
           command: unzip target/universal/mazesite-1.0-SNAPSHOT.zip
-      - aws-cli/install
-      - aws-cli/configure:
-          aws-access-key-id: ACCESS_KEY_ID_IAM_ADMIN
-          aws-secret-access-key: SECRET_ACCESS_KEY_IAM_ADMIN
-          aws-region: AWS_REGION
-          profile-name: IAMAdmin
+
 
       - aws-ecr/build-and-push-image:
           repo: mazegen
@@ -81,6 +76,14 @@ jobs:
           aws-secret-access-key: SECRET_ACCESS_KEY_IAM_ADMIN
           profile-name: IAMAdmin
           region: AWS_REGION
+
+      - aws-cli/install
+      - aws-cli/configure:
+          aws-access-key-id: ACCESS_KEY_ID_IAM_ADMIN
+          aws-secret-access-key: SECRET_ACCESS_KEY_IAM_ADMIN
+          aws-region: AWS_REGION
+          profile-name: IAMAdmin
+
       - run:
           name:  update aws task
           command: aws ecs update-service --cluster mazegen-cluster --service mazeGen-service --force-new-deployment
