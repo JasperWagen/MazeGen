@@ -77,9 +77,9 @@ jobs:
 
       #- aws-cli/install
       - aws-cli/configure:
-          aws-access-key-id: ACCESS_KEY_ID_IAM_ADMIN
-          aws-secret-access-key: SECRET_ACCESS_KEY_IAM_ADMIN
-          aws-region: AWS_REGION
+          aws-access-key-id: ${ACCESS_KEY_ID_IAM_ADMIN}
+          aws-secret-access-key: ${SECRET_ACCESS_KEY_IAM_ADMIN}
+          aws-region: ${AWS_REGION}
           profile-name: IAMAdmin
 
       - run:
