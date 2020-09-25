@@ -79,11 +79,6 @@ jobs:
           name: config aws
           command:
              aws configure set region ${AWS_REGION}
-      - run:
-          name: config aws
-          command: |
-            cat ~/.aws/config
-            cat ~/.aws/credentials
 
       - run:
           name:  update aws task
