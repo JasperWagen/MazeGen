@@ -82,7 +82,8 @@ jobs:
           profile-name: IAMAdmin
           region: AWS_REGION
       - run:
-          name: aws ecs update-service --cluster <cluster name> --service <service name> --force-new-deployment
+          name:  update aws task
+          command: aws ecs update-service --cluster <cluster name> --service <service name> --force-new-deployment
 #      - aws-ecs/update-service:
 #          family: mazeGen-task
 #          cluster-name: mazeGen-cluster
