@@ -82,8 +82,6 @@ jobs:
           profile-name: IAMAdmin
           region: AWS_REGION
       - aws-ecs/update-service:
-          requires:
-            - aws-ecr/build_and_push_image
           family: mazeGen-task
           cluster-name: mazeGen-cluster
           #container-image-name-updates: "container=${ECS_SERVICE_NAME},image-and-tag=${FULL_IMAGE_NAME}"
