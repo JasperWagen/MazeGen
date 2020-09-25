@@ -1,6 +1,4 @@
 # Scala CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/sample-config/ for more details
 
 version: 2.1
 
@@ -77,12 +75,19 @@ jobs:
           profile-name: IAMAdmin
           region: AWS_REGION
 
-      - aws-cli/install
+      #- aws-cli/install
       - aws-cli/configure:
           aws-access-key-id: ACCESS_KEY_ID_IAM_ADMIN
           aws-secret-access-key: SECRET_ACCESS_KEY_IAM_ADMIN
           aws-region: AWS_REGION
           profile-name: IAMAdmin
+
+      -run:
+          name: config aws
+          command: |
+            aws configure set aws_access_key_id ACCESS_KEY_ID_IAM_ADMIN
+            aws configure set aws-secret-access-key SECRET_ACCESS_KEY_IAM_ADMIN
+            aws configure set region us-west-1 AWS_REGION
 
       - run:
           name:  update aws task
