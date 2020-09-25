@@ -44,10 +44,10 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
   def newMaze(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     mazeForm.bindFromRequest().fold(
       formWithErrors => {
-        //TODO: implement bad request
         BadRequest("bad request")
       },
       mazeData => {
+        //TODO: pullout to function
         val width = mazeData.width
         val height = mazeData.height
         val bgHexColor = mazeData.bgColor
