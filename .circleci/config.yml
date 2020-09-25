@@ -66,9 +66,6 @@ jobs:
       - run:
           name: unzip
           command: unzip target/universal/mazesite-1.0-SNAPSHOT.zip
-      - run:
-          name:
-          command: ls
 
       - aws-ecr/build-and-push-image:
           repo: mazegen
@@ -78,6 +75,10 @@ jobs:
           profile-name: IAMAdmin
           region: AWS_REGION
       - aws-ecs/update-service:
+          aws-access-key-id: ACCESS_KEY_ID_IAM_ADMIN
+          aws-secret-access-key: SECRET_ACCESS_KEY_IAM_ADMIN
+          profile-name: IAMAdmin
+          aws-region: AWS_REGION
           family: mazeGen-task
           cluster-name: mazeGen-cluster
           #container-image-name-updates: "container=${ECS_SERVICE_NAME},image-and-tag=${FULL_IMAGE_NAME}"
