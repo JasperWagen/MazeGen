@@ -78,9 +78,9 @@ jobs:
           profile-name: IAMAdmin
           region: AWS_REGION
       - aws-ecs/update-service:
-          family: "${ECS_SERVICE_NAME}"
-          cluster-name: "${ECS_CLUSTER_NAME}"
-          container-image-name-updates: "container=${ECS_SERVICE_NAME},image-and-tag=${FULL_IMAGE_NAME}"
+          family: mazeGen-task
+          cluster-name: mazeGen-cluster
+          #container-image-name-updates: "container=${ECS_SERVICE_NAME},image-and-tag=${FULL_IMAGE_NAME}"
           verify-revision-is-deployed: true
 
 workflows:
