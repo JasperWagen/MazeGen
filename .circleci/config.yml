@@ -94,10 +94,9 @@ jobs:
             cat ~/.aws/config
             cat ~/.aws/credentials
 
-
       - run:
           name:  update aws task
-          command: aws ecs update-service --cluster mazegen-cluster --service mazeGen-service --force-new-deployment
+          command: aws ecs update-service --cluster mazeGen-cluster --service mazeGen-service --force-new-deployment
 #      - aws-ecs/update-service:
 #          family: mazeGen-task
 #          cluster-name: mazeGen-cluster
