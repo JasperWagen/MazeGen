@@ -1,12 +1,11 @@
 # Scala CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/sample-config/ for more details
-#
+
 version: 2.1
 
 orbs:
   aws-ecr: circleci/aws-ecr@6.12.2
-  #aws-cli: circleci/aws-cli@1.3.0
+  aws-ecs: circleci/aws-ecs@0.0.10
+  aws-cli: circleci/aws-cli@0.1.4
 
 jobs:
   test:
@@ -66,31 +65,24 @@ jobs:
       - run:
           name: unzip
           command: unzip target/universal/mazesite-1.0-SNAPSHOT.zip
-      - run:
-          name:
-          command: ls
 
-#      - aws-cli/setup:
+
       - aws-ecr/build-and-push-image:
           repo: mazegen
           account-url: AWS_ECR_ACCOUNT_URL
           aws-access-key-id: ACCESS_KEY_ID_IAM_ADMIN
           aws-secret-access-key: SECRET_ACCESS_KEY_IAM_ADMIN
-          profile-name: IAMAdmin
+
           region: AWS_REGION
 
-#      - run:
-#          name: aws login
-#          command: aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 989081364380.dkr.ecr.eu-west-2.amazonaws.com
-#      - run:
-#          name: build docker
-#          command: docker build -t mazegen .
-#      - run:
-#          name: tag docker
-#          command: docker tag mazegen:latest 989081364380.dkr.ecr.eu-west-2.amazonaws.com/mazegen:latest
-#      - run:
-#          name: push docker
-#          command: docker push 989081364380.dkr.ecr.eu-west-2.amazonaws.com/mazegen:latest
+      - run:
+          name: config aws
+          command:
+             aws configure set region ${AWS_REGION}
+
+      - run:
+          name:  update aws task
+          command: aws ecs update-service --cluster mazeGen-cluster --service mazeGen-service --force-new-deployment
 
 workflows:
   build_and_push_image:
