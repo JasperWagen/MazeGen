@@ -1,5 +1,6 @@
 name := """mazeSite"""
 organization := "HMRC"
+maintainer := "jasperwagen01@gmail.com"
 
 version := "1.0-SNAPSHOT"
 

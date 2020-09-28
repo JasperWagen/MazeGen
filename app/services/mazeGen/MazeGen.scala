@@ -15,12 +15,6 @@ class MazeGen {
 
         val mazeMatrix = Array.fill(height){Array.fill[Byte](width)(0)}
 
-
-//        for(j <- mazeMatrix.indices){
-//            for(i <- mazeMatrix(0).indices){
-//                mazeMatrix(j)(i) = 0
-//            }
-//        }
         mazeMatrix
     }
 
