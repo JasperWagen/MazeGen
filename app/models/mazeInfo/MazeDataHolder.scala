@@ -8,5 +8,8 @@ case class MazeDataHolder(
 
     val bgIntColor: Int = Integer.parseInt(bgHexColor.substring(1), 16)
     val fgIntColor: Int = Integer.parseInt(fgHexColor.substring(1), 16)
+    val pathColor: Int = 16711680
+    val scale: Int = 20
+    val squareSize: Float = 100F
 }
 
