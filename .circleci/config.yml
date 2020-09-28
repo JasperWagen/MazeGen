@@ -82,7 +82,8 @@ jobs:
 
       - run:
           name:  update aws task
-          command: aws ecs update-service --cluster mazeGen-cluster --service mazeGen-service --force-new-deployment
+          command: aws ecs update-service --cluster mazeGen-cluster --service  mazeGen-searviceLoadBal --force-new-deployment
+
 
 workflows:
   build_and_push_image:

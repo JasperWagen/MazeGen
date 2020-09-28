@@ -1,8 +1,6 @@
 package services.mazeGen
 
 import scala.annotation.tailrec
-import scala.collection.mutable.ListBuffer
-import scala.util.Random.nextInt
 
 class PopulateMaze extends MazeGen {
     def populate(mazeCanvas: Array[Array[Byte]]): Array[Array[Byte]] = {
