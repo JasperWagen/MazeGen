@@ -56,14 +56,14 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
   }
 
   def index(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    val mazeDataHolder = MazeRequestData()
+    val mazeRequestObject = MazeRequestData()
 
     val orchestrateMazeCreation = new OrchestrateMazeCreation
-    val mazeImg = orchestrateMazeCreation.create(mazeDataHolder)
+    val mazeImg = orchestrateMazeCreation.create(mazeRequestObject)
 
     val tempMazeImg = File.createTempFile("mazeImg", ".png")
     ImageIO.write(mazeImg, "png", tempMazeImg)
 
-    Ok(views.html.index(mazeForm, mazeDataHolder, tempMazeImg.getAbsolutePath))
+    Ok(views.html.index(mazeForm, mazeRequestObject, tempMazeImg.getAbsolutePath))
   }
 }
