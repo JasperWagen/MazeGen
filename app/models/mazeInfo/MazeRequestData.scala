@@ -1,15 +1,16 @@
 package models.mazeInfo
 
-case class MazeDataHolder(
+case class MazeRequestData(
     mazeDimensions: MazeDimensions = MazeDimensions(70, 40),
     bgHexColor: String = "#4b4b4b",
     fgHexColor: String = "#c8c8c8",
-    solved: Boolean = false){
+    requiresSolution: Boolean = false){
 
     val bgIntColor: Int = Integer.parseInt(bgHexColor.substring(1), 16)
     val fgIntColor: Int = Integer.parseInt(fgHexColor.substring(1), 16)
-    val pathColor: Int = 16711680
+    val solutionColor: Int = 16711680
     val scale: Int = 20
-    val squareSize: Float = 100F
+    val solutionSquareSize: Float = 100F
+    val pathSquareSize: Float = 3.5F
 }
 

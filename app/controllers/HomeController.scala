@@ -7,7 +7,7 @@ import javax.inject._
 import play.api.mvc._
 import services._
 import play.api.mvc.ControllerComponents
-import models.mazeInfo.MazeDataHolder
+import models.mazeInfo.MazeRequestData
 import models.mazeInfo.MazeDimensions
 
 case class MazeForm(height: Int, width: Int, bgColor: String, fgColor: String, solved: Boolean)
@@ -39,24 +39,24 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
       formWithErrors => {
         BadRequest("bad request")
       },
-      mazeData => {
-        val mazeDimensions = MazeDimensions(mazeData.width, mazeData.height)
-        val mazeDataHolder = MazeDataHolder(mazeDimensions, mazeData.bgColor, mazeData.fgColor, mazeData.solved)
+      mazeFormData => {
+        val mazeDimensions = MazeDimensions(mazeFormData.width, mazeFormData.height)
+        val mazeRequestObject = MazeRequestData(
+          mazeDimensions, mazeFormData.bgColor, mazeFormData.fgColor, mazeFormData.solved)
 
         val orchestrateMazeCreation = new OrchestrateMazeCreation
-        val mazeImg = orchestrateMazeCreation.create(mazeDataHolder)
+        val mazeImg = orchestrateMazeCreation.create(mazeRequestObject)
 
         val tempMazeImg = File.createTempFile("mazeImg", ".png")
         ImageIO.write(mazeImg, "png", tempMazeImg)
 
-        Ok(views.html.index(mazeForm, mazeDataHolder, tempMazeImg.getAbsolutePath))
+        Ok(views.html.index(mazeForm, mazeRequestObject, tempMazeImg.getAbsolutePath))
       }
     )
-
   }
 
   def index(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    val mazeDataHolder = MazeDataHolder()
+    val mazeDataHolder = MazeRequestData()
 
     val orchestrateMazeCreation = new OrchestrateMazeCreation
     val mazeImg = orchestrateMazeCreation.create(mazeDataHolder)

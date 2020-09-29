@@ -4,14 +4,12 @@ import scala.collection.immutable.List
 import services.mazeGen.MazeGen
 import models.mazeInfo.MazeDimensions
 
-import scala.util.control.Breaks.breakable
-import scala.annotation
 import scala.annotation.tailrec
-
 
 class DepthFirstSearch extends CheckNodes {
     @tailrec
-    final def nodeIteration(position: (Int, Int), maze: Array[Array[Byte]], visitedNodes: Array[Array[Byte]], searchPath: List[(Int, Int)]):
+    final def nodeIteration(
+        position: (Int, Int), maze: Array[Array[Byte]], visitedNodes: Array[Array[Byte]], searchPath: List[(Int, Int)]):
         List[(Int, Int)] = {
 
         val (j, i) = position
@@ -56,7 +54,7 @@ class DepthFirstSearch extends CheckNodes {
 
     }
 
-    def mapSearchPathToArr(searchPath: List[(Int, Int)], mazeDimensions: MazeDimensions): Array[Array[Byte]] = {
+    def mapSearchPathToArray(searchPath: List[(Int, Int)], mazeDimensions: MazeDimensions): Array[Array[Byte]] = {
         val mazeGen = new MazeGen
         val searchArrInit = mazeGen.canvas(mazeDimensions)
 
