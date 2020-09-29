@@ -1,7 +1,7 @@
 @import models.mazeInfo.MazeDimensions
-@import models.mazeInfo.ModifiedMazeData
+@import models.mazeInfo.MazeRequestData
 
-@(mazeForm: Form[MazeForm], modifiedMazeData: ModifiedMazeData, mazeImgPath: String)(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+@(mazeForm: Form[MazeForm], mazeData: MazeRequestData, mazeImgPath: String)(implicit request: RequestHeader, messagesProvider: MessagesProvider)
 
 @import helper.Implicits._
 @import helper._
@@ -18,16 +18,16 @@
           @CSRF.formField
           <div id="sizeControls">
             @b4.range(mazeForm("Width"), Symbol("_label") -> "Width (5 - 150):", Symbol("min") -> 10, Symbol("max") -> 150,
-                      Symbol("step") -> 1, Symbol("value") -> modifiedMazeData.mazeDimensions.width )
+                      Symbol("step") -> 1, Symbol("value") -> mazeData.mazeDimensions.width )
 
             @b4.range(mazeForm("Height"), Symbol("_label") -> "Height (5 - 150):", Symbol("min") -> 10, Symbol("max") -> 150,
-                      Symbol("step") -> 1, Symbol("value") -> modifiedMazeData.mazeDimensions.height)
+                      Symbol("step") -> 1, Symbol("value") -> mazeData.mazeDimensions.height)
           </div>
           <div id="colorControls">
-            @b4.color(mazeForm("BGColor"), Symbol("_label") -> "Wall Color:", Symbol("value") -> modifiedMazeData.bgHexColor)
-            @b4.color(mazeForm("FGColor"), Symbol("_label") -> "Path Color:", Symbol("value") -> modifiedMazeData.fgHexColor)
+            @b4.color(mazeForm("BGColor"), Symbol("_label") -> "Wall Color:", Symbol("value") -> mazeData.bgHexColor)
+            @b4.color(mazeForm("FGColor"), Symbol("_label") -> "Path Color:", Symbol("value") -> mazeData.fgHexColor)
           </div>
-          @b4.checkbox(mazeForm("Solved"), Symbol("_text") -> "Solve Maze", Symbol("_default") -> modifiedMazeData.solved)
+          @b4.checkbox(mazeForm("Solved"), Symbol("_text") -> "Solve Maze", Symbol("_default") -> mazeData.requiresSolution)
           <br>
           <input id="postButton" type="submit" value="Generate">
         }
