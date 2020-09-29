@@ -2,8 +2,6 @@ package controllers
 
 import java.io.File
 
-import java.nio.file
-import play.libs.Files._
 import javax.imageio.ImageIO
 import javax.inject._
 import play.api.mvc._
@@ -13,11 +11,8 @@ import services.imageCreator.ArrayToImage
 import services.mazeSolver.DepthFirstSearch
 import models.mazeInfo.ModifiedMazeData
 import models.mazeInfo.MazeDimensions
-import play.api.libs.Files
 
 case class MazeForm(height: Int, width: Int, bgColor: String, fgColor: String, solved: Boolean)
-
-//TEST
 
 @Singleton
 class HomeController @Inject()(controllerComponents: ControllerComponents) extends AbstractController(controllerComponents)
@@ -47,7 +42,6 @@ class HomeController @Inject()(controllerComponents: ControllerComponents) exten
         BadRequest("bad request")
       },
       mazeData => {
-        //TODO: pullout to function
         val width = mazeData.width
         val height = mazeData.height
         val bgHexColor = mazeData.bgColor

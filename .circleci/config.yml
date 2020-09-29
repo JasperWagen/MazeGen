@@ -47,7 +47,7 @@ jobs:
       SBT_VERSION: 1.3.13
 
     steps:
-      - run: echo 'export ARTIFACT_BUILD=$CIRCLE_PROJECT_REPONAME-$CIRCLE_BUILD_NUM.zip' >> $BASH_ENV
+#      - run: echo 'export ARTIFACT_BUILD=$CIRCLE_PROJECT_REPONAME-$CIRCLE_BUILD_NUM.zip' >> $BASH_ENV
       - run:
           name: install sbt
           command: |
@@ -83,7 +83,6 @@ jobs:
       - run:
           name:  update aws task
           command: aws ecs update-service --cluster mazeGen-cluster --service  mazeGen-searviceLoadBal --force-new-deployment
-
 
 workflows:
   build_and_push_image:
