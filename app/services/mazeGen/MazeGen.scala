@@ -18,12 +18,17 @@ class MazeGen {
         mazeMatrix
     }
 
-    def checkForPathProximity(direction: String, position: (Int, Int), mazeCanvas: Array[Array[Byte]]): Option[String] = {
+    def checkForPathProximity(
+        direction: String, position: (Int, Int), mazeCanvas: Array[Array[Byte]]):
+        Option[String] = {
+
         val (j, i) = position
-        val jPathProximityRange = Map("north" -> (-2 to -1), "east" -> (-1 to 1), "south" -> (1 to 2), "west" -> (-1 to 1))
-        val iPathProximityRange = Map("north" -> (-1 to 1), "east" -> (1 to 2), "south" -> (-1 to 1), "west" -> (-2 to -1))
+        val jPathProximityRange =
+            Map("north" -> (-2 to -1), "east" -> (-1 to 1), "south" -> (1 to 2), "west" -> (-1 to 1))
+        val iPathProximityRange =
+            Map("north" -> (-1 to 1), "east" -> (1 to 2), "south" -> (-1 to 1), "west" -> (-2 to -1))
+
         try {
-            //TODO: Try remove if statement
             for (jCheckIndex <- jPathProximityRange(direction); iCheckIndex <- iPathProximityRange(direction)) {
                 if (mazeCanvas(j + jCheckIndex)(i + iCheckIndex) == 1) {
                     return None
@@ -42,7 +47,10 @@ class MazeGen {
     }
 
     @tailrec
-    final def pathCreator(position: (Int, Int), mazeCanvas: Array[Array[Byte]], traceback: List[(Int, Int)]): (Array[Array[Byte]], List[(Int, Int)])= {
+    final def pathCreator(
+        position: (Int, Int), mazeCanvas: Array[Array[Byte]], traceback: List[(Int, Int)]):
+        (Array[Array[Byte]], List[(Int, Int)]) = {
+
         val (j, i) = position
 
         val availableDirections = moveOptions(position, mazeCanvas)
@@ -55,7 +63,8 @@ class MazeGen {
 
         val direction = availableDirections(nextInt(availableDirections.size))
 
-        val positionUpdateMap = Map("north" -> (j -1, i), "east" -> (j, i + 1), "south" -> (j + 1, i), "west" -> (j, i -1))
+        val positionUpdateMap =
+            Map("north" -> (j -1, i), "east" -> (j, i + 1), "south" -> (j + 1, i), "west" -> (j, i -1))
 
         val updatedPosition = positionUpdateMap(direction)
         val (jUpdate, iUpdate) = updatedPosition
@@ -64,7 +73,10 @@ class MazeGen {
         pathCreator(updatedPosition, updatedMazeCanvas, updatedTraceback)
     }
 
-    private def updateTraceback(traceback: List[(Int, Int)], position: (Int, Int), availableDirections: List[String]): List[(Int, Int)]= {
+    private def updateTraceback(
+        traceback: List[(Int, Int)], position: (Int, Int), availableDirections: List[String]):
+        List[(Int, Int)]= {
+
         if (availableDirections.length > 1) {
             val updatedTraceback =  position :: traceback
             return updatedTraceback
@@ -96,7 +108,8 @@ class MazeGen {
     def addEntrance(mazeCanvas: Array[Array[Byte]], startLocation: (Int, Int)): Array[Array[Byte]] = {
 
         val (startLocationJ, startLocationI) = startLocation
-        val mazeWithEntrance = mazeCanvas.updated(startLocationJ, mazeCanvas(startLocationJ).updated(startLocationI, 1:Byte))
+        val mazeWithEntrance = mazeCanvas.updated(
+            startLocationJ, mazeCanvas(startLocationJ).updated(startLocationI, 1:Byte))
 
         mazeWithEntrance
     }

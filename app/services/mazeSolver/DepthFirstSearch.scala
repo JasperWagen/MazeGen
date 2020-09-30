@@ -51,7 +51,6 @@ class DepthFirstSearch extends CheckNodes {
         val position = findEntrance(maze)
 
         nodeIteration(position, maze, visitedNodes, searchPath)
-
     }
 
     def mapSearchPathToArray(searchPath: List[(Int, Int)], mazeDimensions: MazeDimensions): Array[Array[Byte]] = {
